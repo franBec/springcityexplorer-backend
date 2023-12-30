@@ -4,7 +4,7 @@ info:
   description: Spring City Explorer
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: 'http://localhost:8080'
 paths:
   /weather:
     get:
@@ -15,6 +15,7 @@ paths:
       parameters:
         - name: city
           in: query
+          required: true
           schema:
             type: string
           description: A city name so you can get the current weather there
@@ -44,7 +45,7 @@ paths:
           required: false
           schema:
             type: string
-            enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+            enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
           description: Use this parameter to set which country get news article from.
         - name: limit
           in: query
@@ -127,7 +128,7 @@ components:
           properties:
             type:
               type: string
-              enum: [ City, LatLon, IP, Zipcode ]
+              enum: [ "City", "LatLon", "IP", "Zipcode" ]
               description: Returns the type of location lookup used for this request.
             query:
               type: string
@@ -138,7 +139,7 @@ components:
             unit:
               type: string
               description: Returns the unit identifier used for this request.
-              enum: [ m, s, f ]
+              enum: [ "m", "s", "f" ]
         location:
           type: object
           properties:
@@ -266,15 +267,15 @@ components:
                 description: Returns an image URL associated with the given news article.
               category:
                 type: string
-                enum: [general, business, entertainment, health, science, sports, technology]
+                enum: ["general", "business", "entertainment", "health", "science", "sports", "technology"]
                 description: Returns the category associated with the given news article.
               language:
                 type: string
-                enum: [ar, de, en, es, fr, he, it, nl, no, pt, ru, se, zh]
+                enum: ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh"]
                 description: Returns the language the given news article is in.
               country:
                 type: string
-                enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+                enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
                 description: Returns the country code associated with the given news article.
               published_at:
                 type: string

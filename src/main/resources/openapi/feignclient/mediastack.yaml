@@ -59,7 +59,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [published_desc, published_asc, popularity]
+            enum: ["published_desc", "published_asc", "popularity"]
             default: published_desc
           description: Use this parameter to specify a sorting order.
         - name: limit
@@ -132,15 +132,15 @@ components:
                 description: Returns an image URL associated with the given news article.
               category:
                 type: string
-                enum: [general, business, entertainment, health, science, sports, technology]
+                enum: ["general", "business", "entertainment", "health", "science", "sports", "technology"]
                 description: Returns the category associated with the given news article.
               language:
                 type: string
-                enum: [ar, de, en, es, fr, he, it, nl, no, pt, ru, se, zh]
+                enum: ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh"]
                 description: Returns the language the given news article is in.
               country:
                 type: string
-                enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+                enum: [ "ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve" ]
                 description: Returns the country code associated with the given news article.
               published_at:
                 type: string
