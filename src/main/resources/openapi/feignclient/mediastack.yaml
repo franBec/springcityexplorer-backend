@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: Mediastack API
+  version: 1.0.0
+  description: API for delivering worldwide news, headlines and blog articles in real-time
+servers:
+  - url: http://api.mediastack.com
+
+paths:
+  /v1/news:
+    get:
+      tags:
+        - News
+      summary: Full set of available real-time news articles
+      parameters:
+        - name: access_key
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Use this parameter to specify your unique API access key, which is shown when you log in to your [account dashboard](https://mediastack.com/dashboard).
+        - name: sources
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to include or exclude one or multiple comma-separated news sources.
+          example: cnn,-bbc
+        - name: categories
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to include or exclude one or multiple comma-separated news categories. Available categories [general, business, entertainment, health, science, sports, technology].
+          example: business,-sports
+        - name: countries
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to include or exclude one or multiple comma-separated countries. [Available countries](https://mediastack.com/sources).
+          example: au,-us
+        - name: languages
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to include or exclude one or multiple comma-separated languages. Available languages [ar, de, en, es, fr, he, it, nl, no, pt, ru, se, zh].
+          example: en,-de
+        - name: keywords
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to seach for sentences, you can also exclude words that you do not want to appear in your search results.
+          example: new movies 2021 -matrix
+        - name: date
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to specify a date or date range.
+          example: 2020-12-24,2020-12-31
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [published_desc, published_asc, popularity]
+            default: published_desc
+          description: Use this parameter to specify a sorting order.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 25
+            maximum: 100
+          description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Use this parameter to specify a pagination offset value for your API request.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaStackNews'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaStackError'
+
+components:
+  schemas:
+    MediaStackNews:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            limit:
+              type: integer
+              description: Returns your pagination limit value.
+            offset:
+              type: integer
+              description: Returns your pagination offset value.
+            count:
+              type: integer
+              description: Returns the results count on the current page.
+            total:
+              type: integer
+              description: Returns the total count of results available.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              author:
+                type: string
+                description: Returns the name of the author of the given news article.
+              title:
+                type: string
+                description: Returns the title text of the given news article.
+              description:
+                type: string
+                description: Returns the description text of the given news article.
+              url:
+                type: string
+                description: Returns the URL leading to the given news article.
+              image:
+                type: string
+                description: Returns an image URL associated with the given news article.
+              category:
+                type: string
+                enum: [general, business, entertainment, health, science, sports, technology]
+                description: Returns the category associated with the given news article.
+              language:
+                type: string
+                enum: [ar, de, en, es, fr, he, it, nl, no, pt, ru, se, zh]
+                description: Returns the language the given news article is in.
+              country:
+                type: string
+                enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+                description: Returns the country code associated with the given news article.
+              published_at:
+                type: string
+                format: date-time
+                description: Returns the exact time stamp the given news article was published.
+
+    MediaStackError:
+      type: object
+      properties:
+        error:
+          type: object
+          description: details about the error that occurred.
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            context:
+              type: object
+              properties:
+                date:
+                  type: array
+                  items:
+                    type: string

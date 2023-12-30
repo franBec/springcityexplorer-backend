@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: Spring City Explorer
+  description: Spring City Explorer
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /weather:
+    get:
+      tags:
+        - Weather
+      summary: Given city, gets current weather
+      operationId: getWeatherByCity
+      parameters:
+        - name: city
+          in: query
+          schema:
+            type: string
+          description: A city name so you can get the current weather there
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /article:
+    get:
+      tags:
+        - Article
+      summary: Given country, gets related articles
+      operationId: getArticlesByCountry
+      parameters:
+        - name: country
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+          description: Use this parameter to set which country get news article from.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Use this parameter to specify a pagination offset value for your API request.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Articles'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /comment:
+    get:
+      tags:
+        - Comment
+      summary: Get list of comments
+      operationId: getComments
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Use this parameter to specify a pagination offset value for your API request.
+      responses:
+        '200':
+          description: A list of comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comments'
+    post:
+      tags:
+        - Comment
+      summary: Post a comment
+      operationId: postComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentPostBody'
+      responses:
+        '201':
+          description: Comment created successfully.
+        '400':
+          description: Invalid input.
+
+components:
+  schemas:
+    Weather:
+      type: object
+      properties:
+        request:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [ City, LatLon, IP, Zipcode ]
+              description: Returns the type of location lookup used for this request.
+            query:
+              type: string
+              description: Returns the exact location identifier query used for this request.
+            language:
+              type: string
+              description: Returns the ISO-Code of the language used for this request.
+            unit:
+              type: string
+              description: Returns the unit identifier used for this request.
+              enum: [ m, s, f ]
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Returns the name of the location used for this request.
+            country:
+              type: string
+              description: Returns the country name associated with the location used for this request.
+            region:
+              type: string
+              description: Returns the region name associated with the location used for this request.
+            lat:
+              type: string
+              description: Returns the latitude coordinate associated with the location used for this request.
+            lon:
+              type: string
+              description: Returns the longitude coordinate associated with the location used for this request.
+            timezone_id:
+              type: string
+              description: Returns the timezone ID associated with the location used for this request.
+              example: America/New_York
+            localtime:
+              type: string
+              description: Returns the local time of the location used for this request.
+              example: 2019-09-07 08:14
+            localtime_epoch:
+              type: integer
+              description: Returns the local time (as UNIX timestamp) of the location used for this request.
+              example: 1567844040
+            utc_offset:
+              type: string
+              description: Returns the UTC offset (in hours) of the timezone associated with the location used for this request.
+              example: -4.0
+        current:
+          type: object
+          properties:
+            observation_time:
+              type: string
+              description: Returns the UTC time for when the returned whether data was collected.
+            temperature:
+              type: integer
+              description: Returns the temperature in the selected unit. (Default Celsius)
+            weather_code:
+              type: integer
+              description: Returns the universal weather condition code associated with the current weather condition. You can download all available weather codes using this [link](https://weatherstack.com/site_resources/weatherstack-weather-condition-codes.zip)
+            weather_icons:
+              type: array
+              items:
+                type: string
+              description: Returns one or more PNG weather icons associated with the current weather condition.
+            weather_descriptions:
+              type: array
+              items:
+                type: string
+              description: Returns one or more weather description texts associated with the current weather condition.
+            wind_speed:
+              type: integer
+              description: Returns the wind speed in the selected unit. (Default kilometers/hour).
+            wind_degree:
+              type: integer
+              description: Returns the wind degree.
+            wind_dir:
+              type: string
+              description: Returns the wind direction.
+            pressure:
+              type: integer
+              description: Returns the air pressure in the selected unit. (Default MB - millibar).
+            precip:
+              type: number
+              description: Returns the precipitation level in the selected unit. (Default MM - millimeters)
+              format: float
+            humidity:
+              type: integer
+              description: Returns the air humidity level in percentage.
+            cloudcover:
+              type: integer
+              description: Returns the cloud cover level in percentage.
+            feelslike:
+              type: integer
+              description: Returns the "Feels Like" temperature in the selected unit. (Default Celsius)
+            uv_index:
+              type: integer
+              description: Returns the UV index associated with the current weather condition.
+            visibility:
+              type: integer
+              description: Returns the visibility level in the selected unit. (Default kilometers)
+    Articles:
+      type: object
+      properties:
+        pagination:
+          type: object
+          properties:
+            limit:
+              type: integer
+              description: Returns your pagination limit value.
+            offset:
+              type: integer
+              description: Returns your pagination offset value.
+            count:
+              type: integer
+              description: Returns the results count on the current page.
+            total:
+              type: integer
+              description: Returns the total count of results available.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              author:
+                type: string
+                description: Returns the name of the author of the given news article.
+              title:
+                type: string
+                description: Returns the title text of the given news article.
+              description:
+                type: string
+                description: Returns the description text of the given news article.
+              url:
+                type: string
+                description: Returns the URL leading to the given news article.
+              image:
+                type: string
+                description: Returns an image URL associated with the given news article.
+              category:
+                type: string
+                enum: [general, business, entertainment, health, science, sports, technology]
+                description: Returns the category associated with the given news article.
+              language:
+                type: string
+                enum: [ar, de, en, es, fr, he, it, nl, no, pt, ru, se, zh]
+                description: Returns the language the given news article is in.
+              country:
+                type: string
+                enum: [ar, au, at, be, br, bg, ca, cn, co, cz, eg, fr, de, gr, hk, hu, in, id, ie, il, it, jp, lv, lt, my, mx, ma, nl, nz, ng, no, ph, pl, pt, ro, sa, rs, sg, sk, si, za, kr, se, ch, tw, th, tr, ae, ua, gb, us, ve]
+                description: Returns the country code associated with the given news article.
+              published_at:
+                type: string
+                format: date-time
+                description: Returns the exact time stamp the given news article was published.
+    Comments:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            type: object
+            properties:
+              content:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+        pageable:
+          $ref: '#/components/schemas/SpringDataPageable'
+        last:
+          type: boolean
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          $ref: '#/components/schemas/SpringDataSortInfo'
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+    CommentPostBody:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 200
+      required:
+        -  content
+    SpringDataSortInfo:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+    SpringDataPageable:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/SpringDataSortInfo'
+        offset:
+          type: integer
+        pageSize:
+          type: integer
+        pageNumber:
+          type: integer
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: The date and time when the error occurred in ISO 8601 format.
+        status:
+          type: integer
+          format: int32
+          description: The HTTP status code of the error.
+        error:
+          type: string
+          description: A brief error message or identifier.
+        message:
+          type: string
+          description: A detailed error message.
+        path:
+          type: string
+          description: The request path that resulted in the error.
+        details:
+          type: string
+          description: Additional details about the error.

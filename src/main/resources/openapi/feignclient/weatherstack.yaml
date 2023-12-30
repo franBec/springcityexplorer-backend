@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: Weatherstack API
+  version: 1.0.0
+  description: API for current weather data
+servers:
+  - url: http://api.weatherstack.com
+
+paths:
+  /current:
+    get:
+      tags:
+        - Weather
+      summary: Get current weather data
+      parameters:
+        - name: access_key
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Your API access key, which can be found in your [acccount dashboard](https://weatherstack.com/dashboard)
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Use this parameter to pass a single location or multiple semicolon-separated location identifiers to the API. Learn more about the [Query Parameter](https://weatherstack.com/documentation#query_parameter).
+        - name: units
+          in: query
+          schema:
+            type: string
+            enum: [m, s, f]
+          description: Use this parameter to pass one of the unit identifiers ot the API (m for Metric, s for Scientific, f for Fahrenheit) Learn more about the [Units Parameter](https://weatherstack.com/documentation#units_parameter).
+        - name: language
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to specify your preferred API response language using its ISO-code. (Default unset, English) Learn more about the [Language Parameter](https://weatherstack.com/documentation#language_parameter).
+        - name: callback
+          in: query
+          schema:
+            type: string
+          description: Use this parameter to specify a JSONP callback function name to wrap your API response in. Learn more about [JSONP Callbacks](https://weatherstack.com/documentation#jsonp_callbacks).
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherStackCurrentWeather'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherStackError'
+
+components:
+  schemas:
+    WeatherStackCurrentWeather:
+      type: object
+      properties:
+        request:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [City, LatLon, IP, Zipcode]
+              description: Returns the type of location lookup used for this request.
+            query:
+              type: string
+              description: Returns the exact location identifier query used for this request.
+            language:
+              type: string
+              description: Returns the ISO-Code of the language used for this request.
+            unit:
+              type: string
+              description: Returns the unit identifier used for this request.
+              enum: [m, s, f]
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Returns the name of the location used for this request.
+            country:
+              type: string
+              description: Returns the country name associated with the location used for this request.
+            region:
+              type: string
+              description: Returns the region name associated with the location used for this request.
+            lat:
+              type: string
+              description: Returns the latitude coordinate associated with the location used for this request.
+            lon:
+              type: string
+              description: Returns the longitude coordinate associated with the location used for this request.
+            timezone_id:
+              type: string
+              description: Returns the timezone ID associated with the location used for this request.
+              example: America/New_York
+            localtime:
+              type: string
+              description: Returns the local time of the location used for this request.
+              example: 2019-09-07 08:14
+            localtime_epoch:
+              type: integer
+              description: Returns the local time (as UNIX timestamp) of the location used for this request.
+              example: 1567844040
+            utc_offset:
+              type: string
+              description: Returns the UTC offset (in hours) of the timezone associated with the location used for this request.
+              example: -4.0
+        current:
+          type: object
+          properties:
+            observation_time:
+              type: string
+              description: Returns the UTC time for when the returned whether data was collected.
+            temperature:
+              type: integer
+              description: Returns the temperature in the selected unit. (Default Celsius)
+            weather_code:
+              type: integer
+              description: Returns the universal weather condition code associated with the current weather condition. You can download all available weather codes using this [link](https://weatherstack.com/site_resources/weatherstack-weather-condition-codes.zip)
+            weather_icons:
+              type: array
+              items:
+                type: string
+              description: Returns one or more PNG weather icons associated with the current weather condition.
+            weather_descriptions:
+              type: array
+              items:
+                type: string
+              description: Returns one or more weather description texts associated with the current weather condition.
+            wind_speed:
+              type: integer
+              description: Returns the wind speed in the selected unit. (Default kilometers/hour).
+            wind_degree:
+              type: integer
+              description: Returns the wind degree.
+            wind_dir:
+              type: string
+              description: Returns the wind direction.
+            pressure:
+              type: integer
+              description: Returns the air pressure in the selected unit. (Default MB - millibar).
+            precip:
+              type: number
+              description: Returns the precipitation level in the selected unit. (Default MM - millimeters)
+              format: float
+            humidity:
+              type: integer
+              description: Returns the air humidity level in percentage.
+            cloudcover:
+              type: integer
+              description: Returns the cloud cover level in percentage.
+            feelslike:
+              type: integer
+              description: Returns the "Feels Like" temperature in the selected unit. (Default Celsius)
+            uv_index:
+              type: integer
+              description: Returns the UV index associated with the current weather condition.
+            visibility:
+              type: integer
+              description: Returns the visibility level in the selected unit. (Default kilometers)
+    WeatherStackError:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: object
+          description: details about the error that occurred.
+          properties:
+            code:
+              type: integer
+            type:
+              type: string
+            info:
+              type: string
