@@ -17,57 +17,76 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+		<!-- Starter for building web applications using Spring MVC. Includes Tomcat as the default embedded container -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Provides development-time features such as automatic restarts and live reloads for a smoother development experience. To be used only during development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Simplifies Java code by reducing boilerplate (e.g., getters, setters, constructors, etc.) -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Provides core items necessary for testing Spring Boot applications, including JUnit, Hamcrest, and Mockito -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Provides the API for Java Bean Validation, allowing for constraint declarations and validation of Java objects -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>2.0.1.Final</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Integrates SpringFox with Spring Boot applications, enabling Swagger 2 documentation for RESTful services -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Provides common annotation types for Java, such as @Generated and @Resource -->
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Serves as a simple facade for various logging frameworks -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>2.0.7</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Logging framework, intended as a successor to log4j project -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.4.8</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Backport of the Java 8 java.time API (JSR-310) for Java 6 and 7, providing an improved date and time API -->
 		<dependency>
 			<groupId>org.threeten</groupId>
 			<artifactId>threetenbp</artifactId>
@@ -77,6 +96,8 @@
 	</dependencies>
 
 	<build>
+
+		<!-- Simplifies the packaging and running of Spring Boot applications. Generates a runnable 'uber' jar file, which includes dependencies and resource files. Excludes Lombok from the final packaged application -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -90,6 +111,8 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- Generates server stubs and client SDKs from an OpenAPI Specification (OAS). In this configuration, it's set up to generate Spring MVC controller interfaces from a specified YAML file, placing them in the defined output directory. The configuration is tailored to generate only the interfaces, without additional supporting files -->
 			<plugin>
 				<groupId>io.swagger.codegen.v3</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
