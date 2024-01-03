@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CommentController implements CommentApi {
-    @Override
-    public ResponseEntity<Comments> getComments(Integer limit, Integer offset) {
-        return null;
-    }
+  @Override
+  public ResponseEntity<Comments> getComments(Integer limit, Integer offset) {
+    return null;
+  }
 
-    @Override
-    public ResponseEntity<Void> postComment(CommentPostBody body) {
-        return null;
-    }
+  @Override
+  public ResponseEntity<Void> postComment(CommentPostBody body) {
+    return null;
+  }
 }

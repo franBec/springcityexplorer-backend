@@ -97,7 +97,9 @@
 
 	<build>
 
-		<!-- Simplifies the packaging and running of Spring Boot applications. Generates a runnable 'uber' jar file, which includes dependencies and resource files. Excludes Lombok from the final packaged application -->
+		<!-- Simplifies the packaging and running of Spring Boot applications.
+		Generates a runnable 'uber' jar file, which includes dependencies and resource files.
+		Excludes Lombok from the final packaged application -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -112,7 +114,9 @@
 				</configuration>
 			</plugin>
 
-			<!-- Generates server stubs and client SDKs from an OpenAPI Specification (OAS). In this configuration, it's set up to generate Spring MVC controller interfaces from a specified YAML file, placing them in the defined output directory. The configuration is tailored to generate only the interfaces, without additional supporting files -->
+			<!-- Generates server stubs and client SDKs from an OpenAPI Specification (OAS).
+			In this configuration, it's set up to generate Spring MVC controller interfaces from a specified YAML file, placing them in the defined output directory.
+			The configuration is tailored to generate only the interfaces, without additional supporting files -->
 			<plugin>
 				<groupId>io.swagger.codegen.v3</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
@@ -134,6 +138,21 @@
 								<interfaceOnly>true</interfaceOnly>
 							</configOptions>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Automatically formats Java source code in the project according to Google's Java Style Guide.
+			The 'format' goal is executed to ensure consistent code style across the project -->
+			<plugin>
+				<groupId>com.spotify.fmt</groupId>
+				<artifactId>fmt-maven-plugin</artifactId>
+				<version>2.20</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
