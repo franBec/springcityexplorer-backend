@@ -350,23 +350,12 @@ components:
     Error:
       type: object
       properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: The date and time when the error occurred in ISO 8601 format.
-        status:
-          type: integer
-          format: int32
-          description: The HTTP status code of the error.
         error:
           type: string
           description: A brief error message or identifier.
         message:
           type: string
           description: A detailed error message.
-        path:
+        method:
           type: string
-          description: The request path that resulted in the error.
-        details:
-          type: string
-          description: Additional details about the error.
+          description: The method that resulted in the error.
