@@ -1,9 +1,13 @@
 package dev.pollito.springcityexplorer;
 
+import dev.pollito.springcityexplorer.models.Articles;
+import dev.pollito.springcityexplorer.models.ArticlesData;
+import dev.pollito.springcityexplorer.models.ArticlesPagination;
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.models.WeatherCurrent;
 import dev.pollito.springcityexplorer.models.WeatherLocation;
 import dev.pollito.springcityexplorer.models.WeatherRequest;
+import org.threeten.bp.OffsetDateTime;
 
 import java.util.List;
 
@@ -52,5 +56,30 @@ public class MockData {
                                 .feelslike(MOCK_INTEGER)
                                 .uvIndex(MOCK_INTEGER)
                                 .visibility(MOCK_INTEGER));
+    }
+
+    public static Articles mockArticles(){
+        return new Articles()
+                .pagination(
+                        new ArticlesPagination()
+                                .limit(MOCK_INTEGER)
+                                .offset(MOCK_INTEGER)
+                                .count(MOCK_INTEGER)
+                                .total(MOCK_INTEGER)
+                )
+                .data(List.of(
+                        new ArticlesData()
+                                .author(MOCK_STRING)
+                                .title(MOCK_STRING)
+                                .description(MOCK_STRING)
+                                .url(MOCK_STRING)
+                                .image(MOCK_STRING)
+                                .category(
+                                        ArticlesData.CategoryEnum.GENERAL
+                                )
+                                .language(ArticlesData.LanguageEnum.AR)
+                                .country(ArticlesData.CountryEnum.AR)
+                                .publishedAt(OffsetDateTime.now())
+                ));
     }
 }
