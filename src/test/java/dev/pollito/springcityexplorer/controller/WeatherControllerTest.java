@@ -18,9 +18,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class WeatherControllerTest {
 
-    @InjectMocks WeatherController weatherController;
+    @InjectMocks private WeatherController weatherController;
     @Mock
-    WeatherService weatherService;
+    private WeatherService weatherService;
 
     @Test
     void whenGetWeatherByCityThenReturnsWeather(){
