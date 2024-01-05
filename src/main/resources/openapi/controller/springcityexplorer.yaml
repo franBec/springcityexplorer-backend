@@ -352,6 +352,10 @@ components:
           type: integer
         content:
           type: string
+        timestamp:
+          type: string
+          description: The date and time when the comment occurred in ISO 8601 format.
+          example: "2024-01-04T15:30:00Z"
     SpringDataSortInfo:
       type: object
       properties:
