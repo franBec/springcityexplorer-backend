@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CommentController implements CommentApi {
   @Override
-  public ResponseEntity<Comments> getComments(Integer limit, Integer offset) {
+  public ResponseEntity<Comments> getComments(Integer limit, Integer offset, String sortOrder) {
     return null;
   }
 
