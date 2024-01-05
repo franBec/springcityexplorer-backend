@@ -101,6 +101,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comments'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Comment
@@ -111,12 +118,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CommentPostBody'
+              $ref: '#/components/schemas/CommentPostRequest'
       responses:
         '201':
           description: Comment created successfully.
-        '400':
-          description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentPostResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -315,7 +330,7 @@ components:
           type: integer
         empty:
           type: boolean
-    CommentPostBody:
+    CommentPostRequest:
       type: object
       properties:
         content:
@@ -324,6 +339,13 @@ components:
           maxLength: 200
       required:
         -  content
+    CommentPostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
     SpringDataSortInfo:
       type: object
       properties:
