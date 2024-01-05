@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
-    @Override
-    public Weather getWeatherByCity(String city) {
-        return null;
-    }
+  @Override
+  public Weather getWeatherByCity(String city) {
+    return null;
+  }
 }

@@ -1,5 +1,11 @@
 package dev.pollito.springcityexplorer.controller;
 
+import static dev.pollito.springcityexplorer.MockData.MOCK_STRING;
+import static dev.pollito.springcityexplorer.MockData.mockWeather;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.service.WeatherService;
 import org.junit.jupiter.api.Test;
@@ -9,28 +15,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import static dev.pollito.springcityexplorer.MockData.MOCK_STRING;
-import static dev.pollito.springcityexplorer.MockData.mockWeather;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 class WeatherControllerTest {
 
-    @InjectMocks private WeatherController weatherController;
-    @Mock
-    private WeatherService weatherService;
+  @InjectMocks private WeatherController weatherController;
+  @Mock private WeatherService weatherService;
 
-    @Test
-    void whenGetWeatherByCityThenReturnsWeather(){
+  @Test
+  void whenGetWeatherByCityThenReturnsWeather() {
 
-        ResponseEntity<Weather> expectedResponse = ResponseEntity.ok(mockWeather());
-        when(weatherService.getWeatherByCity(anyString()))
-                .thenReturn(expectedResponse.getBody());
+    ResponseEntity<Weather> expectedResponse = ResponseEntity.ok(mockWeather());
+    when(weatherService.getWeatherByCity(anyString())).thenReturn(expectedResponse.getBody());
 
-        ResponseEntity<Weather> actualResponse = weatherController.getWeatherByCity(MOCK_STRING);
+    ResponseEntity<Weather> actualResponse = weatherController.getWeatherByCity(MOCK_STRING);
 
-        assertEquals(expectedResponse.getBody(), actualResponse.getBody());
-    }
+    assertEquals(expectedResponse.getBody(), actualResponse.getBody());
+  }
 }

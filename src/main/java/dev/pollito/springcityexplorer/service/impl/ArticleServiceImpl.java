@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
-    @Override
-    public Articles getArticlesByCountry(String country, Integer limit, Integer offset) {
-        return null;
-    }
+  @Override
+  public Articles getArticlesByCountry(String country, Integer limit, Integer offset) {
+    return null;
+  }
 }
