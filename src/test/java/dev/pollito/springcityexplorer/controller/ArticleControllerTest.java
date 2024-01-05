@@ -1,6 +1,5 @@
 package dev.pollito.springcityexplorer.controller;
 
-import static dev.pollito.springcityexplorer.MockData.MOCK_INTEGER;
 import static dev.pollito.springcityexplorer.MockData.MOCK_STRING;
 import static dev.pollito.springcityexplorer.MockData.mockArticles;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +28,7 @@ class ArticleControllerTest {
         .thenReturn(expectedResponse.getBody());
 
     ResponseEntity<Articles> actualResponse =
-        articleController.getArticlesByCountry(MOCK_STRING, MOCK_INTEGER, MOCK_INTEGER);
+        articleController.getArticlesByCountry(MOCK_STRING, 0, 0);
 
     assertEquals(expectedResponse.getBody(), actualResponse.getBody());
   }

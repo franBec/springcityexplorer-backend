@@ -3,11 +3,16 @@ package dev.pollito.springcityexplorer;
 import dev.pollito.springcityexplorer.models.Articles;
 import dev.pollito.springcityexplorer.models.ArticlesData;
 import dev.pollito.springcityexplorer.models.ArticlesPagination;
+import dev.pollito.springcityexplorer.models.CommentPostRequest;
+import dev.pollito.springcityexplorer.models.CommentPostResponse;
+import dev.pollito.springcityexplorer.models.Comments;
+import dev.pollito.springcityexplorer.models.CommentsContent;
+import dev.pollito.springcityexplorer.models.SpringDataPageable;
+import dev.pollito.springcityexplorer.models.SpringDataSortInfo;
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.models.WeatherCurrent;
 import dev.pollito.springcityexplorer.models.WeatherLocation;
 import dev.pollito.springcityexplorer.models.WeatherRequest;
-
 import java.util.List;
 
 public class MockData {
@@ -18,7 +23,6 @@ public class MockData {
   public static final String MOCK_LOCALTIME = "2019-09-07 08:14";
   public static final Integer MOCK_LOCALTIME_EPOCH = 1567844040;
   public static final String MOCK_UTC_OFFSET = "-4";
-  public static final Integer MOCK_INTEGER = 0;
   public static final String MOCK_ISO8601_DATE = "2024-01-04T15:30:00Z";
 
   public static Weather mockWeather() {
@@ -43,29 +47,24 @@ public class MockData {
         .current(
             new WeatherCurrent()
                 .observationTime(MOCK_STRING)
-                .temperature(MOCK_INTEGER)
-                .weatherCode(MOCK_INTEGER)
+                .temperature(0)
+                .weatherCode(0)
                 .weatherIcons(List.of(MOCK_STRING))
                 .weatherDescriptions(List.of(MOCK_STRING))
-                .windSpeed(MOCK_INTEGER)
-                .windDegree(MOCK_INTEGER)
+                .windSpeed(0)
+                .windDegree(0)
                 .windDir(MOCK_STRING)
-                .pressure(MOCK_INTEGER)
-                .humidity(MOCK_INTEGER)
-                .cloudcover(MOCK_INTEGER)
-                .feelslike(MOCK_INTEGER)
-                .uvIndex(MOCK_INTEGER)
-                .visibility(MOCK_INTEGER));
+                .pressure(0)
+                .humidity(0)
+                .cloudcover(0)
+                .feelslike(0)
+                .uvIndex(0)
+                .visibility(0));
   }
 
   public static Articles mockArticles() {
     return new Articles()
-        .pagination(
-            new ArticlesPagination()
-                .limit(MOCK_INTEGER)
-                .offset(MOCK_INTEGER)
-                .count(MOCK_INTEGER)
-                .total(MOCK_INTEGER))
+        .pagination(new ArticlesPagination().limit(0).offset(0).count(0).total(0))
         .data(
             List.of(
                 new ArticlesData()
@@ -77,8 +76,40 @@ public class MockData {
                     .category(ArticlesData.CategoryEnum.GENERAL)
                     .language(ArticlesData.LanguageEnum.AR)
                     .country(ArticlesData.CountryEnum.AR)
-                    .publishedAt(MOCK_ISO8601_DATE)
-            )
-        );
+                    .publishedAt(MOCK_ISO8601_DATE)));
+  }
+
+  public static SpringDataSortInfo mockSpringDataSortInfo() {
+    return new SpringDataSortInfo().empty(true).sorted(true).unsorted(true);
+  }
+
+  public static Comments mockComments() {
+    return new Comments()
+        .content(List.of(new CommentsContent().content(MOCK_STRING).timestamp(MOCK_ISO8601_DATE)))
+        .pageable(
+            new SpringDataPageable()
+                .sort(mockSpringDataSortInfo())
+                .offset(0)
+                .pageSize(0)
+                .pageNumber(0)
+                .paged(true)
+                .unpaged(true))
+        .last(true)
+        .totalElements(0)
+        .totalPages(0)
+        .size(0)
+        .number(0)
+        .sort(mockSpringDataSortInfo())
+        .first(true)
+        .number(0)
+        .empty(true);
+  }
+
+  public static CommentPostRequest mockCommentPostRequest() {
+    return new CommentPostRequest().content(MOCK_STRING);
+  }
+
+  public static CommentPostResponse mockCommentPostResponse() {
+    return new CommentPostResponse().content(MOCK_STRING).id(0).timestamp(MOCK_ISO8601_DATE);
   }
 }
