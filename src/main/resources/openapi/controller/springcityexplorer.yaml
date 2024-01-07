@@ -44,8 +44,7 @@ paths:
           in: query
           required: false
           schema:
-            type: string
-            enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
+            $ref: '#/components/schemas/CountryEnum'
           description: Use this parameter to set which country get news article from.
         - name: limit
           in: query
@@ -295,8 +294,7 @@ components:
                 enum: ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh"]
                 description: Returns the language the given news article is in.
               country:
-                type: string
-                enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
+                $ref: '#/components/schemas/CountryEnum'
                 description: Returns the country code associated with the given news article.
               published_at:
                 type: string
@@ -400,3 +398,6 @@ components:
         method:
           type: string
           description: The method that resulted in the error.
+    CountryEnum:
+      type: string
+      enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]

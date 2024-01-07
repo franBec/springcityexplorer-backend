@@ -7,6 +7,7 @@ import dev.pollito.springcityexplorer.models.CommentPostRequest;
 import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
 import dev.pollito.springcityexplorer.models.CommentsContent;
+import dev.pollito.springcityexplorer.models.CountryEnum;
 import dev.pollito.springcityexplorer.models.SpringDataPageable;
 import dev.pollito.springcityexplorer.models.SpringDataSortInfo;
 import dev.pollito.springcityexplorer.models.Weather;
@@ -75,7 +76,7 @@ public class MockData {
                     .image(MOCK_STRING)
                     .category(ArticlesData.CategoryEnum.GENERAL)
                     .language(ArticlesData.LanguageEnum.AR)
-                    .country(ArticlesData.CountryEnum.AR)
+                    .country(CountryEnum.AR)
                     .publishedAt(MOCK_ISO8601_DATE)));
   }
 

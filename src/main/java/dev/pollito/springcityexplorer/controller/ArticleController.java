@@ -2,6 +2,7 @@ package dev.pollito.springcityexplorer.controller;
 
 import dev.pollito.springcityexplorer.api.ArticleApi;
 import dev.pollito.springcityexplorer.models.Articles;
+import dev.pollito.springcityexplorer.models.CountryEnum;
 import dev.pollito.springcityexplorer.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,8 @@ public class ArticleController implements ArticleApi {
 
   @Override
   public ResponseEntity<Articles> getArticlesByCountry(
-      String country, Integer limit, Integer offset) {
-    return ResponseEntity.ok(articleService.getArticlesByCountry(country, limit, offset));
+      CountryEnum country, Integer limit, Integer offset) {
+    return ResponseEntity.ok(
+        articleService.getArticlesByCountry(country.toString(), limit, offset));
   }
 }
