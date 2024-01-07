@@ -86,6 +86,10 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!--
+		  It integrates the Hibernate Validator and the Validation API, providing a seamless experience for adding validation capabilities to Spring Boot applications.
+		  The specified version ensures compatibility with other Spring Boot 3.x components.
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
