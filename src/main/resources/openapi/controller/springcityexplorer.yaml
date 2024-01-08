@@ -89,13 +89,15 @@ paths:
           schema:
             type: integer
             default: 10
-            maximum: 100
+            maximum: 10
+            minimum: 1
           description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
         - name: offset
           in: query
           schema:
             type: integer
             default: 0
+            minimum: 0
           description: Use this parameter to specify a pagination offset value for your API request.
         - name: sortOrder
           in: query
