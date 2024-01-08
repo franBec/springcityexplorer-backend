@@ -12,7 +12,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface CommentService {
   Comments getComments(
-          @Max(100) @Min(1) Integer limit, @Min(0) Integer offset, @ValidCommentSortOrder String sortOrder);
+      @Max(100) @Min(1) Integer limit,
+      @Min(0) Integer offset,
+      @ValidCommentSortOrder String sortOrder);
 
   CommentPostResponse postComment(@Valid CommentPostRequestJakarta request);
 }

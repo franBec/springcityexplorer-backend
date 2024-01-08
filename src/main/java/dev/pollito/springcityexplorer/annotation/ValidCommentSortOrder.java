@@ -3,7 +3,6 @@ package dev.pollito.springcityexplorer.annotation;
 import dev.pollito.springcityexplorer.validator.CommentSortOrderValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
