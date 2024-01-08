@@ -11,13 +11,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import dev.pollito.springcityexplorer.dto.CommentPostRequestJakarta;
+import dev.pollito.springcityexplorer.mapper.CommentPostRequestJakartaMapper;
 import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
 import dev.pollito.springcityexplorer.service.CommentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
@@ -25,6 +28,10 @@ import org.springframework.http.ResponseEntity;
 class CommentControllerTest {
   @InjectMocks private CommentController commentController;
   @Mock private CommentService commentService;
+
+  @Spy
+  private CommentPostRequestJakartaMapper commentPostRequestJakartaMapper =
+      Mappers.getMapper(CommentPostRequestJakartaMapper.class);
 
   @Test
   void whenGetCommentsThenReturnComments() {
