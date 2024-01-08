@@ -4,13 +4,13 @@ import static dev.pollito.springcityexplorer.MockData.MOCK_STRING;
 import static dev.pollito.springcityexplorer.MockData.mockCommentPostRequest;
 import static dev.pollito.springcityexplorer.MockData.mockCommentPostResponse;
 import static dev.pollito.springcityexplorer.MockData.mockComments;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import dev.pollito.springcityexplorer.models.CommentPostRequest;
+import dev.pollito.springcityexplorer.dto.CommentPostRequestJakarta;
 import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
 import dev.pollito.springcityexplorer.service.CommentService;
@@ -40,7 +40,7 @@ class CommentControllerTest {
   void whenPostCommentThenReturnCommentResponse() {
     ResponseEntity<CommentPostResponse> expectedResponse =
         ResponseEntity.ok(mockCommentPostResponse());
-    when(commentService.postComment(any(CommentPostRequest.class)))
+    when(commentService.postComment(any(CommentPostRequestJakarta.class)))
         .thenReturn(expectedResponse.getBody());
 
     ResponseEntity<CommentPostResponse> actualResponse =

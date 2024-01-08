@@ -1,4 +1,4 @@
-package dev.pollito.springcityexplorer.config;
+package dev.pollito.springcityexplorer.properties.validation;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "validation.article.country")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ValidationArticleCountryConfig {
+public class ArticleCountryProperties {
   List<String> codes;
   String errorMessage;
 }

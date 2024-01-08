@@ -1,6 +1,7 @@
 package dev.pollito.springcityexplorer.controller;
 
 import dev.pollito.springcityexplorer.api.CommentApi;
+import dev.pollito.springcityexplorer.mapper.CommentPostRequestJakartaMapper;
 import dev.pollito.springcityexplorer.models.CommentPostRequest;
 import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommentController implements CommentApi {
   private final CommentService commentService;
+  private final CommentPostRequestJakartaMapper commentPostRequestJakartaMapper;
 
   @Override
   public ResponseEntity<Comments> getComments(Integer limit, Integer offset, String sortOrder) {
@@ -21,6 +23,6 @@ public class CommentController implements CommentApi {
 
   @Override
   public ResponseEntity<CommentPostResponse> postComment(CommentPostRequest body) {
-    return ResponseEntity.ok(commentService.postComment(body));
+    return ResponseEntity.ok(commentService.postComment(commentPostRequestJakartaMapper.map(body)));
   }
 }
