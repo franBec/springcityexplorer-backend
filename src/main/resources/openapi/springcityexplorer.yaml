@@ -52,13 +52,16 @@ paths:
           schema:
             type: integer
             default: 10
-            maximum: 100
+            minimum: 1
+            maximum: 10
           description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
         - name: offset
           in: query
           schema:
             type: integer
             default: 0
+            minimum: 0
+            maximum: 10000
           description: Use this parameter to specify a pagination offset value for your API request.
       responses:
         '200':
@@ -86,14 +89,22 @@ paths:
           schema:
             type: integer
             default: 10
-            maximum: 100
+            maximum: 10
+            minimum: 1
           description: Use this parameter to specify a pagination limit (number of results per page) for your API request.
         - name: offset
           in: query
           schema:
             type: integer
             default: 0
+            minimum: 0
           description: Use this parameter to specify a pagination offset value for your API request.
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum: ["asc","desc"]
+          description: Use this parameter to specify a pagination timestamp order value for your API request.
       responses:
         '200':
           description: A list of comments
@@ -101,6 +112,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comments'
+
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - Comment
@@ -111,12 +129,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CommentPostBody'
+              $ref: '#/components/schemas/CommentPostRequest'
       responses:
         '201':
           description: Comment created successfully.
-        '400':
-          description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentPostResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -248,52 +274,49 @@ components:
         data:
           type: array
           items:
-            type: object
-            properties:
-              author:
-                type: string
-                description: Returns the name of the author of the given news article.
-              title:
-                type: string
-                description: Returns the title text of the given news article.
-              description:
-                type: string
-                description: Returns the description text of the given news article.
-              url:
-                type: string
-                description: Returns the URL leading to the given news article.
-              image:
-                type: string
-                description: Returns an image URL associated with the given news article.
-              category:
-                type: string
-                enum: ["general", "business", "entertainment", "health", "science", "sports", "technology"]
-                description: Returns the category associated with the given news article.
-              language:
-                type: string
-                enum: ["ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh"]
-                description: Returns the language the given news article is in.
-              country:
-                type: string
-                enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
-                description: Returns the country code associated with the given news article.
-              published_at:
-                type: string
-                format: date-time
-                description: Returns the exact time stamp the given news article was published.
+            $ref: '#/components/schemas/Article'
+    Article:
+      type: object
+      properties:
+        author:
+          type: string
+          description: Returns the name of the author of the given news article.
+        title:
+          type: string
+          description: Returns the title text of the given news article.
+        description:
+          type: string
+          description: Returns the description text of the given news article.
+        url:
+          type: string
+          description: Returns the URL leading to the given news article.
+        image:
+          type: string
+          description: Returns an image URL associated with the given news article.
+        category:
+          type: string
+          enum: [ "general", "business", "entertainment", "health", "science", "sports", "technology" ]
+          description: Returns the category associated with the given news article.
+        language:
+          type: string
+          enum: [ "ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
+          description: Returns the language the given news article is in.
+        country:
+          type: string
+          enum: [ "ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve" ]
+          description: Returns the country code associated with the given news article.
+        published_at:
+          type: string
+          format: date-time
+          description: The date and time when the publication occurred in ISO 8601 format.
+          example: "2024-01-04T15:30:00Z"
     Comments:
       type: object
       properties:
         content:
           type: array
           items:
-            type: object
-            properties:
-              content:
-                type: string
-              timestamp:
-                type: string
-                format: date-time
+            $ref: '#/components/schemas/Comment'
         pageable:
           $ref: '#/components/schemas/SpringDataPageable'
         last:
@@ -314,7 +337,17 @@ components:
           type: integer
         empty:
           type: boolean
-    CommentPostBody:
+    Comment:
+      type: object
+      properties:
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+          description: The date and time when the comment occurred in ISO 8601 format.
+          example: "2024-01-04T15:30:00Z"
+    CommentPostRequest:
       type: object
       properties:
         content:
@@ -323,6 +356,18 @@ components:
           maxLength: 200
       required:
         -  content
+    CommentPostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+          description: The date and time when the comment occurred in ISO 8601 format.
+          example: "2024-01-04T15:30:00Z"
     SpringDataSortInfo:
       type: object
       properties:
@@ -352,21 +397,19 @@ components:
       properties:
         timestamp:
           type: string
-          format: date-time
           description: The date and time when the error occurred in ISO 8601 format.
-        status:
-          type: integer
-          format: int32
-          description: The HTTP status code of the error.
+          format: date-time
+          example: "2024-01-04T15:30:00Z"
+        session:
+          type: string
+          format: uuid
+          description: A unique UUID for the session instance where the error happened, useful for tracking and debugging purposes.
         error:
           type: string
           description: A brief error message or identifier.
         message:
           type: string
           description: A detailed error message.
-        path:
+        method:
           type: string
-          description: The request path that resulted in the error.
-        details:
-          type: string
-          description: Additional details about the error.
+          description: The method that resulted in the error.

@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ArticleController implements ArticleApi {
-    @Override
-    public ResponseEntity<Articles> getArticlesByCountry(String country, Integer limit, Integer offset) {
-        return null;
-    }
+  @Override
+  public ResponseEntity<Articles> getArticlesByCountry(
+      String country, Integer limit, Integer offset) {
+    return ArticleApi.super.getArticlesByCountry(country, limit, offset);
+  }
 }

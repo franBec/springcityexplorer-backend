@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class WeatherController implements WeatherApi {
-    @Override
-    public ResponseEntity<Weather> getWeatherByCity(String city) {
-        return null;
-    }
+  @Override
+  public ResponseEntity<Weather> getWeatherByCity(String city) {
+    return WeatherApi.super.getWeatherByCity(city);
+  }
 }

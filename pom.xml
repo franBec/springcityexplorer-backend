@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
+		<version>3.1.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.pollito</groupId>
@@ -46,59 +46,65 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Provides the API for Java Bean Validation, allowing for constraint declarations and validation of Java objects -->
+		<!-- Simplifies the implementation of mappings between Java bean types	-->
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.3.Final</version>
+		</dependency>
+
+		<!-- Enables handling of Java 8 Optionals and other nullable types within Jackson, useful for dealing with JSON fields that may be absent -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Integrates SpringFox with Spring Boot applications, enabling Swagger 2 documentation for RESTful services -->
+		<!--
+			Integrates Swagger 2 for API documentation into a Spring Boot application.
+			Excludes swagger-annotations from io.swagger.core.v3 to avoid conflicts between different versions
+           	of swagger-annotations brought in by other dependencies.
+		-->
 		<dependency>
 			<groupId>io.springfox</groupId>
-			<artifactId>springfox-boot-starter</artifactId>
+			<artifactId>springfox-swagger2</artifactId>
 			<version>3.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-annotations</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Includes the swagger-core-jakarta library, used for API modeling, which includes annotations and core functionality. -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-core-jakarta</artifactId>
+			<version>2.2.7</version>
+		</dependency>
+
+		<!--
+		  It integrates the Hibernate Validator and the Validation API, providing a seamless experience for adding validation capabilities to Spring Boot applications.
+		  The specified version ensures compatibility with other Spring Boot 3.x components
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>3.1.2</version>
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Provides common annotation types for Java, such as @Generated and @Resource -->
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Serves as a simple facade for various logging frameworks -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>2.0.7</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Logging framework, intended as a successor to log4j project -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.4.8</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Backport of the Java 8 java.time API (JSR-310) for Java 6 and 7, providing an improved date and time API -->
-		<dependency>
-			<groupId>org.threeten</groupId>
-			<artifactId>threetenbp</artifactId>
-			<version>1.6.8</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
-
-		<!-- Simplifies the packaging and running of Spring Boot applications. Generates a runnable 'uber' jar file, which includes dependencies and resource files. Excludes Lombok from the final packaged application -->
 		<plugins>
+			<!--
+				Simplifies the packaging and running of Spring Boot applications.
+				Generates a runnable 'uber' jar file, which includes dependencies and resource files.
+				Excludes Lombok from the final packaged application
+			-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -112,26 +118,77 @@
 				</configuration>
 			</plugin>
 
-			<!-- Generates server stubs and client SDKs from an OpenAPI Specification (OAS). In this configuration, it's set up to generate Spring MVC controller interfaces from a specified YAML file, placing them in the defined output directory. The configuration is tailored to generate only the interfaces, without additional supporting files -->
+			<!--
+				Automatically formats Java source code in the project according to Google's Java Style Guide.
+				The 'format' goal is executed to ensure consistent code style across the project
+			-->
 			<plugin>
-				<groupId>io.swagger.codegen.v3</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>3.0.36</version>
+				<groupId>com.spotify.fmt</groupId>
+				<artifactId>fmt-maven-plugin</artifactId>
+				<version>2.20</version>
 				<executions>
 					<execution>
-						<id>controller interfaces generation</id>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!--
+			  Specifies the Java compiler settings
+
+			  1. MapStruct Processor: Generates implementation code for MapStruct mappings at compile time.
+			  2. Lombok: Reduce boilerplate code.
+			  3. Lombok-Mapstruct Binding: Integration between Lombok and MapStruct.
+			-->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.5.3.Final</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<dependency>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</dependency>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<!-- Generates API client libraries, server stubs, documentation and configuration automatically given an OpenAPI Spec. -->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.2.0</version>
+				<executions>
+					<execution>
+						<id>generation from springcityexplorer</id>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/openapi/controller/springcityexplorer.yaml</inputSpec>
-							<language>spring</language>
-							<output>${project.build.directory}/generated-sources/swagger/controllerinterfaces/</output>
-							<generateSupportingFiles>false</generateSupportingFiles>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/springcityexplorer.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<output>${project.build.directory}/generated-sources/openapi/springcityexplorer/</output>
 							<apiPackage>dev.pollito.springcityexplorer.api</apiPackage>
 							<modelPackage>dev.pollito.springcityexplorer.models</modelPackage>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>
+								<useSpringBoot3>true</useSpringBoot3>
 							</configOptions>
 						</configuration>
 					</execution>
