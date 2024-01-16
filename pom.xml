@@ -189,6 +189,7 @@
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>
 								<useSpringBoot3>true</useSpringBoot3>
+								<useEnumCaseInsensitive>true</useEnumCaseInsensitive>
 							</configOptions>
 						</configuration>
 					</execution>

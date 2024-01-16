@@ -3,6 +3,9 @@ info:
   title: Spring City Explorer
   description: Spring City Explorer
   version: 1.0.0
+  contact:
+    name: Pollito
+    url: https://pollitodev.netlify.app/
 servers:
   - url: 'http://localhost:8080'
 paths:
@@ -44,8 +47,7 @@ paths:
           in: query
           required: false
           schema:
-            type: string
-            enum: ["ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve"]
+            $ref: '#/components/schemas/CountryEnum'
           description: Use this parameter to set which country get news article from.
         - name: limit
           in: query
@@ -253,6 +255,9 @@ components:
             visibility:
               type: integer
               description: Returns the visibility level in the selected unit. (Default kilometers)
+    CountryEnum:
+      type: string
+      enum: [ "ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve" ]
     Articles:
       type: object
       properties:
@@ -302,8 +307,8 @@ components:
           enum: [ "ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
           description: Returns the language the given news article is in.
         country:
-          type: string
-          enum: [ "ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve" ]
+          allOf:
+            - $ref: '#/components/schemas/CountryEnum'
           description: Returns the country code associated with the given news article.
         published_at:
           type: string
