@@ -195,6 +195,35 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Runs your unit tests against automatically modified versions of your application code. -->
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.15.3</version>
+				<executions>
+					<execution>
+						<id>pit-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>mutationCoverage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.2.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<excludedClasses>
+						<param>dev.pollito.springcityexplorer.api.*</param>
+						<param>dev.pollito.springcityexplorer.models.*</param>
+					</excludedClasses>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
