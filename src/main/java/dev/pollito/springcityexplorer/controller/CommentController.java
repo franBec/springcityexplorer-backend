@@ -24,7 +24,7 @@ public class CommentController implements CommentApi {
 
   @Override
   public ResponseEntity<CommentPostResponse> postComment(CommentPostRequest commentPostRequest) {
-    return ResponseEntity.status(HttpStatus.CREATED.value())
+    return ResponseEntity.status(HttpStatus.CREATED)
         .body(commentService.postComment(commentPostRequest));
   }
 }
