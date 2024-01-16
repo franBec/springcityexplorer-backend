@@ -104,8 +104,7 @@ paths:
         - name: sortOrder
           in: query
           schema:
-            type: string
-            enum: ["asc","desc"]
+            $ref: '#/components/schemas/SortOrderEnum'
           description: Use this parameter to specify a pagination timestamp order value for your API request.
       responses:
         '200':
@@ -258,6 +257,10 @@ components:
     CountryEnum:
       type: string
       enum: [ "ar", "au", "at", "be", "br", "bg", "ca", "cn", "co", "cz", "eg", "fr", "de", "gr", "hk", "hu", "in", "id", "ie", "il", "it", "jp", "lv", "lt", "my", "mx", "ma", "nl", "nz", "ng", "no", "ph", "pl", "pt", "ro", "sa", "rs", "sg", "sk", "si", "za", "kr", "se", "ch", "tw", "th", "tr", "ae", "ua", "gb", "us", "ve" ]
+    SortOrderEnum:
+      type: string
+      enum: [ "asc", "desc" ]
+      default: "desc"
     Articles:
       type: object
       properties:
