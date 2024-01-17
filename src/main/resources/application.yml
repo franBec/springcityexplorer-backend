@@ -2,4 +2,4 @@ client:
   weather:
     baseUrl: http://api.weatherstack.com
     secrets:
-      key: get your key at http://api.weatherstack.com
+      key: ${WEATHER_API_KEY}
