@@ -1,7 +1,6 @@
 package dev.pollito.springcityexplorer.service.impl;
 
 import com.weatherstack.api.WeatherApi;
-import com.weatherstack.models.WeatherStackCurrentWeather;
 import dev.pollito.springcityexplorer.client.WeatherClient;
 import dev.pollito.springcityexplorer.config.properties.WeatherProperties;
 import dev.pollito.springcityexplorer.models.Weather;
@@ -18,7 +17,7 @@ public class WeatherServiceImpl implements WeatherService {
 
   @Override
   public Weather getWeatherByCity(String city) {
-    WeatherStackCurrentWeather weather =
+    com.weatherstack.models.Weather weather =
         weatherClient.currentGet(
             new WeatherApi.CurrentGetQueryParams()
                 .accessKey(weatherProperties.getSecrets().get("key"))
