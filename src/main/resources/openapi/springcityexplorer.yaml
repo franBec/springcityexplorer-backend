@@ -252,12 +252,12 @@ components:
       type: object
       properties:
         pagination:
-          $ref: '#/components/schemas/ArticlePagination'
+          $ref: '#/components/schemas/ArticlesPagination'
         data:
           type: array
           items:
             $ref: '#/components/schemas/Article'
-    ArticlePagination:
+    ArticlesPagination:
       type: object
       properties:
         limit:

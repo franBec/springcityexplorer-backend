@@ -13,7 +13,6 @@ import dev.pollito.springcityexplorer.models.SpringDataSortInfo;
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.models.WeatherCurrent;
 import dev.pollito.springcityexplorer.models.WeatherLocation;
-import dev.pollito.springcityexplorer.models.WeatherRequest;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -29,12 +28,6 @@ public class MockData {
 
   public static Weather mockWeather() {
     return new Weather()
-        .request(
-            new WeatherRequest()
-                .type(WeatherRequest.TypeEnum.CITY)
-                .query(MOCK_STRING)
-                .language(MOCK_STRING)
-                .unit(WeatherRequest.UnitEnum.M))
         .location(
             new WeatherLocation()
                 .name(MOCK_STRING)
