@@ -1,5 +1,5 @@
 package dev.pollito.springcityexplorer.client;
 
-import dev.pollito.springcityexplorer.api.WeatherApi;
+import com.weatherstack.api.WeatherApi;
 
 public interface WeatherClient extends WeatherApi {}
