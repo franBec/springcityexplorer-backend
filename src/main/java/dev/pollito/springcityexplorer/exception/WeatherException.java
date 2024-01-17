@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class WeatherException extends RuntimeException {
-  private final WeatherStackError weatherStackError;
+  private final transient WeatherStackError weatherStackError;
 }
