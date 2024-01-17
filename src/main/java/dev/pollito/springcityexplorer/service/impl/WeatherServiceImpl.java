@@ -3,6 +3,7 @@ package dev.pollito.springcityexplorer.service.impl;
 import com.weatherstack.api.WeatherApi;
 import dev.pollito.springcityexplorer.client.WeatherClient;
 import dev.pollito.springcityexplorer.config.properties.WeatherProperties;
+import dev.pollito.springcityexplorer.mapper.WeatherMapper;
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.service.WeatherService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,14 @@ public class WeatherServiceImpl implements WeatherService {
 
   private final WeatherClient weatherClient;
   private final WeatherProperties weatherProperties;
+  private final WeatherMapper weatherMapper;
 
   @Override
   public Weather getWeatherByCity(String city) {
-    com.weatherstack.models.Weather weather =
+    return weatherMapper.map(
         weatherClient.currentGet(
             new WeatherApi.CurrentGetQueryParams()
                 .accessKey(weatherProperties.getSecrets().get("key"))
-                .query(city));
-    return null;
+                .query(city)));
   }
 }
