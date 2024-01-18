@@ -1,5 +1,8 @@
 package dev.pollito.springcityexplorer;
 
+import com.weatherstack.models.Current;
+import com.weatherstack.models.Location;
+import com.weatherstack.models.Request;
 import dev.pollito.springcityexplorer.models.Article;
 import dev.pollito.springcityexplorer.models.Articles;
 import dev.pollito.springcityexplorer.models.ArticlesPagination;
@@ -23,39 +26,100 @@ public class MockData {
   private MockData() {}
 
   private static final Faker faker = new Faker();
+  public static final float WEATHER_CURRENT_PRECIP = (float) faker.number().randomDouble(1, 0, 1);
+  public static final int WEATHER_CURRENT_VISIBILITY = faker.number().numberBetween(1, 10);
+  public static final int WEATHER_CURRENT_UV_INDEX = faker.number().numberBetween(0, 8);
+  public static final int WEATHER_CURRENT_FEELSLIKE = faker.number().numberBetween(-20, 50);
+  public static final int WEATHER_CURRENT_CLOUDCOVER = faker.number().numberBetween(0, 100);
+  public static final int WEATHER_CURRENT_HUMIDITY = faker.number().numberBetween(0, 100);
+  public static final int WEATHER_CURRENT_PRESSURE = faker.number().numberBetween(950, 1050);
+  public static final String WEATHER_CURRENT_WIND_DIR = faker.regexify("[A-Z]{3}");
+  public static final int WEATHER_CURRENT_WIND_DEGREE = faker.number().numberBetween(0, 359);
+  public static final int WEATHER_CURRENT_WIND_SPEED = faker.number().numberBetween(0, 70);
+  public static final List<String> WEATHER_CURRENT_WEATHER_DESCRIPTIONS =
+      List.of(faker.weather().description(), faker.weather().description());
+  public static final List<String> WEATHER_CURRENT_WEATHER_ICONS =
+      List.of(faker.internet().image(), faker.internet().image());
+  public static final int WEATHER_CURRENT_WEATHER_CODE = (int) faker.number().randomNumber(3, true);
+  public static final int WEATHER_CURRENT_TEMPERATURE = faker.number().numberBetween(-20, 50);
+  public static final String WEATHER_CURRENT_OBSERVATION_TIME =
+      new SimpleDateFormat("hh:mm a").format(faker.date().future(365, TimeUnit.DAYS));
+  public static final String WEATHER_LOCATION_UTC_OFFSET =
+      String.valueOf(faker.number().numberBetween(-12, 14));
+  public static final int WEATHER_LOCATION_LOCALTIME_EPOCH =
+      (int) faker.number().randomNumber(10, true);
+  public static final String WEATHER_LOCATION_LOCALTIME =
+      new SimpleDateFormat("yyyy-MM-dd HH:mm").format(faker.date().future(365, TimeUnit.DAYS));
+  public static final String WEATHER_LOCATION_TIMEZONE = faker.address().timeZone();
+  public static final String WEATHER_LOCATION_LONGITUDE = faker.address().longitude();
+  public static final String WEATHER_LOCATION_LATITUDE = faker.address().latitude();
+  public static final String WEATHER_LOCATION_REGION = faker.coffee().region();
+  public static final String WEATHER_LOCATION_COUNTRY = faker.address().country();
+  public static final String WEATHER_LOCATION_CITY = faker.address().city();
 
   public static Weather mockWeather() {
     return new Weather()
         .location(
             new WeatherLocation()
-                .name(faker.address().city())
-                .country(faker.address().country())
-                .region(faker.coffee().region())
-                .lat(faker.address().latitude())
-                .lon(faker.address().longitude())
-                .timezoneId(faker.address().timeZone())
-                ._localtime(
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm")
-                        .format(faker.date().future(365, TimeUnit.DAYS)))
-                .localtimeEpoch((int) faker.number().randomNumber(10, true))
-                .utcOffset(String.valueOf(faker.number().numberBetween(-12, 14))))
+                .name(WEATHER_LOCATION_CITY)
+                .country(WEATHER_LOCATION_COUNTRY)
+                .region(WEATHER_LOCATION_REGION)
+                .lat(WEATHER_LOCATION_LATITUDE)
+                .lon(WEATHER_LOCATION_LONGITUDE)
+                .timezoneId(WEATHER_LOCATION_TIMEZONE)
+                ._localtime(WEATHER_LOCATION_LOCALTIME)
+                .localtimeEpoch(WEATHER_LOCATION_LOCALTIME_EPOCH)
+                .utcOffset(WEATHER_LOCATION_UTC_OFFSET))
         .current(
             new WeatherCurrent()
-                .observationTime(
-                    new SimpleDateFormat("hh:mm a").format(faker.date().future(365, TimeUnit.DAYS)))
-                .temperature(faker.number().numberBetween(-20, 50))
-                .weatherCode((int) faker.number().randomNumber(3, true))
-                .weatherIcons(List.of(faker.internet().image()))
-                .weatherDescriptions(List.of(faker.weather().description()))
-                .windSpeed(faker.number().numberBetween(0, 70))
-                .windDegree(faker.number().numberBetween(0, 359))
-                .windDir(faker.regexify("[A-Z]{3}"))
-                .pressure(faker.number().numberBetween(950, 1050))
-                .humidity(faker.number().numberBetween(0, 100))
-                .cloudcover(faker.number().numberBetween(0, 100))
-                .feelslike(faker.number().numberBetween(-20, 50))
-                .uvIndex(faker.number().numberBetween(0, 8))
-                .visibility(faker.number().numberBetween(1, 10)));
+                .observationTime(WEATHER_CURRENT_OBSERVATION_TIME)
+                .temperature(WEATHER_CURRENT_TEMPERATURE)
+                .weatherCode(WEATHER_CURRENT_WEATHER_CODE)
+                .weatherIcons(WEATHER_CURRENT_WEATHER_ICONS)
+                .weatherDescriptions(WEATHER_CURRENT_WEATHER_DESCRIPTIONS)
+                .windSpeed(WEATHER_CURRENT_WIND_SPEED)
+                .windDegree(WEATHER_CURRENT_WIND_DEGREE)
+                .windDir(WEATHER_CURRENT_WIND_DIR)
+                .pressure(WEATHER_CURRENT_PRESSURE)
+                .precip(WEATHER_CURRENT_PRECIP)
+                .humidity(WEATHER_CURRENT_HUMIDITY)
+                .cloudcover(WEATHER_CURRENT_CLOUDCOVER)
+                .feelslike(WEATHER_CURRENT_FEELSLIKE)
+                .uvIndex(WEATHER_CURRENT_UV_INDEX)
+                .visibility(WEATHER_CURRENT_VISIBILITY));
+  }
+
+  public static com.weatherstack.models.Weather mockWeatherstackWeather() {
+    return new com.weatherstack.models.Weather()
+        .request(new Request())
+        .location(
+            new Location()
+                .name(WEATHER_LOCATION_CITY)
+                .country(WEATHER_LOCATION_COUNTRY)
+                .region(WEATHER_LOCATION_REGION)
+                .lat(WEATHER_LOCATION_LATITUDE)
+                .lon(WEATHER_LOCATION_LONGITUDE)
+                .timezoneId(WEATHER_LOCATION_TIMEZONE)
+                ._localtime(WEATHER_LOCATION_LOCALTIME)
+                .localtimeEpoch(WEATHER_LOCATION_LOCALTIME_EPOCH)
+                .utcOffset(WEATHER_LOCATION_UTC_OFFSET))
+        .current(
+            new Current()
+                .observationTime(WEATHER_CURRENT_OBSERVATION_TIME)
+                .temperature(WEATHER_CURRENT_TEMPERATURE)
+                .weatherCode(WEATHER_CURRENT_WEATHER_CODE)
+                .weatherIcons(WEATHER_CURRENT_WEATHER_ICONS)
+                .weatherDescriptions(WEATHER_CURRENT_WEATHER_DESCRIPTIONS)
+                .windSpeed(WEATHER_CURRENT_WIND_SPEED)
+                .windDegree(WEATHER_CURRENT_WIND_DEGREE)
+                .windDir(WEATHER_CURRENT_WIND_DIR)
+                .pressure(WEATHER_CURRENT_PRESSURE)
+                .precip(WEATHER_CURRENT_PRECIP)
+                .humidity(WEATHER_CURRENT_HUMIDITY)
+                .cloudcover(WEATHER_CURRENT_CLOUDCOVER)
+                .feelslike(WEATHER_CURRENT_FEELSLIKE)
+                .uvIndex(WEATHER_CURRENT_UV_INDEX)
+                .visibility(WEATHER_CURRENT_VISIBILITY));
   }
 
   public static Articles mockArticles() {
@@ -68,7 +132,7 @@ public class MockData {
                     .title(faker.book().title())
                     .description(faker.coffee().descriptor())
                     .url(faker.internet().url())
-                    .image(faker.internet().url())
+                    .image(faker.internet().image())
                     .category(Article.CategoryEnum.GENERAL)
                     .language(Article.LanguageEnum.AR)
                     .country(CountryEnum.AR)
