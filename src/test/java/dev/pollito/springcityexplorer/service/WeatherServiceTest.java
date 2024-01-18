@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.weatherstack.api.WeatherApi;
-import dev.pollito.springcityexplorer.client.WeatherClient;
 import dev.pollito.springcityexplorer.config.properties.WeatherProperties;
 import dev.pollito.springcityexplorer.mapper.WeatherMapper;
 import dev.pollito.springcityexplorer.models.Weather;
@@ -27,7 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class WeatherServiceTest {
   @InjectMocks private WeatherServiceImpl weatherService;
   @Mock private WeatherProperties weatherProperties;
-  @Mock private WeatherClient weatherClient;
+  @Mock private WeatherApi weatherApi;
   @Spy private WeatherMapper weatherMapper = Mappers.getMapper(WeatherMapper.class);
 
   Faker faker = new Faker();
@@ -39,7 +38,7 @@ class WeatherServiceTest {
 
   @Test
   void getWeatherByCity() {
-    when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
+    when(weatherApi.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
         .thenReturn(mockWeatherstackWeather());
     Weather expectedResponse = mockWeather();
     Weather actualResponse = weatherService.getWeatherByCity(faker.address().city());
@@ -57,7 +56,7 @@ class WeatherServiceTest {
     weather.setCurrent(null);
     weather.setLocation(null);
 
-    when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
+    when(weatherApi.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
         .thenReturn(weatherstackWeather);
     Weather actualResponse = weatherService.getWeatherByCity(faker.address().city());
 
@@ -66,7 +65,7 @@ class WeatherServiceTest {
 
   @Test
   void getWeatherByCity_NullWeather() {
-    when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class))).thenReturn(null);
+    when(weatherApi.currentGet(any(WeatherApi.CurrentGetQueryParams.class))).thenReturn(null);
     assertNull(weatherService.getWeatherByCity(faker.address().city()));
   }
 }

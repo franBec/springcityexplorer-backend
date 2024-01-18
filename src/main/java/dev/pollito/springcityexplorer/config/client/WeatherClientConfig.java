@@ -1,6 +1,6 @@
 package dev.pollito.springcityexplorer.config.client;
 
-import dev.pollito.springcityexplorer.client.WeatherClient;
+import com.weatherstack.api.WeatherApi;
 import dev.pollito.springcityexplorer.config.properties.WeatherProperties;
 import dev.pollito.springcityexplorer.decoder.WeatherResponseDecoder;
 import feign.Feign;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
     value = {
       @ComponentScan(
           basePackages = {
-            "dev.pollito.springcityexplorer.client",
+            "com.weatherstack.api",
           })
     })
 @RequiredArgsConstructor
@@ -28,13 +28,13 @@ public class WeatherClientConfig {
   private final WeatherProperties weatherProperties;
 
   @Bean
-  public WeatherClient weatherClient() {
+  public WeatherApi weatherApi() {
     return Feign.builder()
         .client(new OkHttpClient())
         .encoder(new GsonEncoder())
         .decoder(new WeatherResponseDecoder())
-        .logger(new Slf4jLogger(WeatherClient.class))
+        .logger(new Slf4jLogger(WeatherApi.class))
         .logLevel(Logger.Level.FULL)
-        .target(WeatherClient.class, weatherProperties.getBaseUrl());
+        .target(WeatherApi.class, weatherProperties.getBaseUrl());
   }
 }
