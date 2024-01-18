@@ -14,6 +14,7 @@ import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.service.impl.WeatherServiceImpl;
 import java.util.Map;
 import net.datafaker.Faker;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -32,6 +33,7 @@ class WeatherServiceTest {
   Faker faker = new Faker();
 
   @Test
+  @DisplayName("Should return expected weather data for a given city")
   void whenGetWeatherByCityThenOK() {
     when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
     when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
@@ -40,5 +42,33 @@ class WeatherServiceTest {
     Weather actualResponse = weatherService.getWeatherByCity(faker.address().city());
 
     assertEquals(expectedResponse, actualResponse);
+  }
+
+  @Test
+  @DisplayName("Tests weatherMapper ability to handle null current and location")
+  void whenWeatherValuesAreNullStillOk() {
+    com.weatherstack.models.Weather weatherstackWeather = mockWeatherstackWeather();
+    weatherstackWeather.setCurrent(null);
+    weatherstackWeather.setLocation(null);
+
+    Weather weather = mockWeather();
+    weather.setCurrent(null);
+    weather.setLocation(null);
+
+    when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
+    when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
+        .thenReturn(weatherstackWeather);
+    Weather actualResponse = weatherService.getWeatherByCity(faker.address().city());
+
+    assertEquals(weather, actualResponse);
+  }
+
+  @Test
+  @DisplayName("Tests weatherMapper ability to handle null weather")
+  void whenWeatherisNullStillOk() {
+    when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
+    when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class))).thenReturn(null);
+
+    assertNull(weatherService.getWeatherByCity(faker.address().city()));
   }
 }
