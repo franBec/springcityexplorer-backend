@@ -2,7 +2,9 @@ package dev.pollito.springcityexplorer;
 
 import com.weatherstack.models.Current;
 import com.weatherstack.models.Location;
+import com.weatherstack.models.LocationTypeEnum;
 import com.weatherstack.models.Request;
+import com.weatherstack.models.UnitEnum;
 import dev.pollito.springcityexplorer.models.Article;
 import dev.pollito.springcityexplorer.models.Articles;
 import dev.pollito.springcityexplorer.models.ArticlesPagination;
@@ -26,6 +28,8 @@ public class MockData {
   private MockData() {}
 
   private static final Faker faker = new Faker();
+  public static final String WEATHER_REQUEST_LANGUAGE = faker.nation().language();
+  public static final String WEATHER_REQUEST_QUERY = faker.address().fullAddress();
   public static final float WEATHER_CURRENT_PRECIP = (float) faker.number().randomDouble(1, 0, 1);
   public static final int WEATHER_CURRENT_VISIBILITY = faker.number().numberBetween(1, 10);
   public static final int WEATHER_CURRENT_UV_INDEX = faker.number().numberBetween(0, 8);
@@ -91,7 +95,12 @@ public class MockData {
 
   public static com.weatherstack.models.Weather mockWeatherstackWeather() {
     return new com.weatherstack.models.Weather()
-        .request(new Request())
+        .request(
+            new Request()
+                .type(LocationTypeEnum.CITY)
+                .query(WEATHER_REQUEST_QUERY)
+                .language(WEATHER_REQUEST_LANGUAGE)
+                .unit(UnitEnum.M))
         .location(
             new Location()
                 .name(WEATHER_LOCATION_CITY)
