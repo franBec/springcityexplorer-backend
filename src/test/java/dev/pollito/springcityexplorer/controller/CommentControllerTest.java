@@ -31,7 +31,7 @@ class CommentControllerTest {
   private final Faker faker = new Faker();
 
   @Test
-  void whenGetCommentsThenReturnComments() {
+  void getComments() {
     ResponseEntity<Comments> expectedResponse = ResponseEntity.ok(mockComments());
     when(commentService.getComments(anyInt(), anyInt(), any(SortOrderEnum.class)))
         .thenReturn(expectedResponse.getBody());
@@ -46,7 +46,7 @@ class CommentControllerTest {
   }
 
   @Test
-  void whenPostCommentThenReturnCommentResponse() {
+  void postComment() {
     ResponseEntity<CommentPostResponse> expectedResponse =
         ResponseEntity.status(HttpStatus.CREATED).body(mockCommentPostResponse());
     when(commentService.postComment(any(CommentPostRequest.class)))

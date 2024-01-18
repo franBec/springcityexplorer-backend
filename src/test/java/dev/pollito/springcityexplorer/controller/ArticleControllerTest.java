@@ -26,7 +26,7 @@ class ArticleControllerTest {
   private final Faker faker = new Faker();
 
   @Test
-  void whenGetArticlesByCountryThenOK() {
+  void getArticlesByCountry() {
     ResponseEntity<Articles> expectedResponse = ResponseEntity.ok(mockArticles());
     when(articleService.getArticlesByCountry(any(CountryEnum.class), anyInt(), anyInt()))
         .thenReturn(expectedResponse.getBody());

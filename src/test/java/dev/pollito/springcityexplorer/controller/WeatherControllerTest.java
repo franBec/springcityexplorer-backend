@@ -24,7 +24,7 @@ class WeatherControllerTest {
   private final Faker faker = new Faker();
 
   @Test
-  void whenGetWeatherByCityThenReturnsWeather() {
+  void getWeatherByCity() {
 
     ResponseEntity<Weather> expectedResponse = ResponseEntity.ok(mockWeather());
     when(weatherService.getWeatherByCity(anyString())).thenReturn(expectedResponse.getBody());

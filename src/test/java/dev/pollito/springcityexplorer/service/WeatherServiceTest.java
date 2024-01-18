@@ -14,7 +14,7 @@ import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.service.impl.WeatherServiceImpl;
 import java.util.Map;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -32,10 +32,13 @@ class WeatherServiceTest {
 
   Faker faker = new Faker();
 
-  @Test
-  @DisplayName("Should return expected weather data for a given city")
-  void whenGetWeatherByCityThenOK() {
+  @BeforeEach
+  void setUp() {
     when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
+  }
+
+  @Test
+  void getWeatherByCity() {
     when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
         .thenReturn(mockWeatherstackWeather());
     Weather expectedResponse = mockWeather();
@@ -45,8 +48,7 @@ class WeatherServiceTest {
   }
 
   @Test
-  @DisplayName("Tests weatherMapper ability to handle null current and location")
-  void whenWeatherValuesAreNullStillOk() {
+  void getWeatherByCity_NullWeatherFields() {
     com.weatherstack.models.Weather weatherstackWeather = mockWeatherstackWeather();
     weatherstackWeather.setCurrent(null);
     weatherstackWeather.setLocation(null);
@@ -55,7 +57,6 @@ class WeatherServiceTest {
     weather.setCurrent(null);
     weather.setLocation(null);
 
-    when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
     when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class)))
         .thenReturn(weatherstackWeather);
     Weather actualResponse = weatherService.getWeatherByCity(faker.address().city());
@@ -64,11 +65,8 @@ class WeatherServiceTest {
   }
 
   @Test
-  @DisplayName("Tests weatherMapper ability to handle null weather")
-  void whenWeatherisNullStillOk() {
-    when(weatherProperties.getSecrets()).thenReturn(Map.of("key", faker.internet().password()));
+  void getWeatherByCity_NullWeather() {
     when(weatherClient.currentGet(any(WeatherApi.CurrentGetQueryParams.class))).thenReturn(null);
-
     assertNull(weatherService.getWeatherByCity(faker.address().city()));
   }
 }
