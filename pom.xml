@@ -272,6 +272,7 @@
 							<configOptions>
 								<feignClient>true</feignClient>
 								<interfaceOnly>true</interfaceOnly>
+								<useEnumCaseInsensitive>true</useEnumCaseInsensitive>
 							</configOptions>
 						</configuration>
 					</execution>
