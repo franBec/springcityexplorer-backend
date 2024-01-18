@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import dev.pollito.springcityexplorer.models.Articles;
 import dev.pollito.springcityexplorer.models.CountryEnum;
 import dev.pollito.springcityexplorer.service.ArticleService;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +23,8 @@ class ArticleControllerTest {
   @InjectMocks private ArticleController articleController;
   @Mock private ArticleService articleService;
 
+  private final Faker faker = new Faker();
+
   @Test
   void whenGetArticlesByCountryThenOK() {
     ResponseEntity<Articles> expectedResponse = ResponseEntity.ok(mockArticles());
@@ -29,7 +32,10 @@ class ArticleControllerTest {
         .thenReturn(expectedResponse.getBody());
 
     ResponseEntity<Articles> actualResponse =
-        articleController.getArticlesByCountry(CountryEnum.AR, 0, 0);
+        articleController.getArticlesByCountry(
+            CountryEnum.AR,
+            faker.number().numberBetween(1, 10),
+            faker.number().numberBetween(0, 10000));
     assertTrue(actualResponse.getStatusCode().is2xxSuccessful());
     assertEquals(expectedResponse.getBody(), actualResponse.getBody());
   }

@@ -13,48 +13,49 @@ import dev.pollito.springcityexplorer.models.SpringDataSortInfo;
 import dev.pollito.springcityexplorer.models.Weather;
 import dev.pollito.springcityexplorer.models.WeatherCurrent;
 import dev.pollito.springcityexplorer.models.WeatherLocation;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import net.datafaker.Faker;
 
 public class MockData {
   private MockData() {}
 
-  public static final String MOCK_STRING = "string";
-  public static final String MOCK_TIMEZONE_ID = "America/New_York";
-  public static final String MOCK_LOCALTIME = "2019-09-07 08:14";
-  public static final Integer MOCK_LOCALTIME_EPOCH = 1567844040;
-  public static final String MOCK_UTC_OFFSET = "-4";
-  public static final OffsetDateTime MOCK_OFFSETDATETIME = OffsetDateTime.now();
+  private static final Faker faker = new Faker();
 
   public static Weather mockWeather() {
     return new Weather()
         .location(
             new WeatherLocation()
-                .name(MOCK_STRING)
-                .country(MOCK_STRING)
-                .region(MOCK_STRING)
-                .lat(MOCK_STRING)
-                .lon(MOCK_STRING)
-                .timezoneId(MOCK_TIMEZONE_ID)
-                ._localtime(MOCK_LOCALTIME)
-                .localtimeEpoch(MOCK_LOCALTIME_EPOCH)
-                .utcOffset(MOCK_UTC_OFFSET))
+                .name(faker.address().city())
+                .country(faker.address().country())
+                .region(faker.coffee().region())
+                .lat(faker.address().latitude())
+                .lon(faker.address().longitude())
+                .timezoneId(faker.address().timeZone())
+                ._localtime(
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm")
+                        .format(faker.date().future(365, TimeUnit.DAYS)))
+                .localtimeEpoch((int) faker.number().randomNumber(10, true))
+                .utcOffset(String.valueOf(faker.number().numberBetween(-12, 14))))
         .current(
             new WeatherCurrent()
-                .observationTime(MOCK_STRING)
-                .temperature(0)
-                .weatherCode(0)
-                .weatherIcons(List.of(MOCK_STRING))
-                .weatherDescriptions(List.of(MOCK_STRING))
-                .windSpeed(0)
-                .windDegree(0)
-                .windDir(MOCK_STRING)
-                .pressure(0)
-                .humidity(0)
-                .cloudcover(0)
-                .feelslike(0)
-                .uvIndex(0)
-                .visibility(0));
+                .observationTime(
+                    new SimpleDateFormat("hh:mm a").format(faker.date().future(365, TimeUnit.DAYS)))
+                .temperature(faker.number().numberBetween(-20, 50))
+                .weatherCode((int) faker.number().randomNumber(3, true))
+                .weatherIcons(List.of(faker.internet().image()))
+                .weatherDescriptions(List.of(faker.weather().description()))
+                .windSpeed(faker.number().numberBetween(0, 70))
+                .windDegree(faker.number().numberBetween(0, 359))
+                .windDir(faker.regexify("[A-Z]{3}"))
+                .pressure(faker.number().numberBetween(950, 1050))
+                .humidity(faker.number().numberBetween(0, 100))
+                .cloudcover(faker.number().numberBetween(0, 100))
+                .feelslike(faker.number().numberBetween(-20, 50))
+                .uvIndex(faker.number().numberBetween(0, 8))
+                .visibility(faker.number().numberBetween(1, 10)));
   }
 
   public static Articles mockArticles() {
@@ -63,48 +64,59 @@ public class MockData {
         .data(
             List.of(
                 new Article()
-                    .author(MOCK_STRING)
-                    .title(MOCK_STRING)
-                    .description(MOCK_STRING)
-                    .url(MOCK_STRING)
-                    .image(MOCK_STRING)
+                    .author(faker.book().author())
+                    .title(faker.book().title())
+                    .description(faker.coffee().descriptor())
+                    .url(faker.internet().url())
+                    .image(faker.internet().url())
                     .category(Article.CategoryEnum.GENERAL)
                     .language(Article.LanguageEnum.AR)
                     .country(CountryEnum.AR)
-                    .publishedAt(MOCK_OFFSETDATETIME)));
+                    .publishedAt(OffsetDateTime.now())));
   }
 
   public static SpringDataSortInfo mockSpringDataSortInfo() {
-    return new SpringDataSortInfo().empty(true).sorted(true).unsorted(true);
+    return new SpringDataSortInfo()
+        .empty(faker.random().nextBoolean())
+        .sorted(faker.random().nextBoolean())
+        .unsorted(faker.random().nextBoolean());
   }
 
   public static Comments mockComments() {
     return new Comments()
-        .content(List.of(new Comment().content(MOCK_STRING).timestamp(MOCK_OFFSETDATETIME)))
+        .content(
+            List.of(
+                new Comment()
+                    .content(faker.lorem().characters(faker.number().numberBetween(1, 200)))
+                    .timestamp(OffsetDateTime.now())))
         .pageable(
             new SpringDataPageable()
                 .sort(mockSpringDataSortInfo())
-                .offset(0)
-                .pageSize(0)
-                .pageNumber(0)
-                .paged(true)
-                .unpaged(true))
-        .last(true)
-        .totalElements(0)
-        .totalPages(0)
-        .size(0)
-        .number(0)
+                .offset(faker.number().positive())
+                .pageSize(faker.number().positive())
+                .pageNumber(faker.number().positive())
+                .paged(faker.random().nextBoolean())
+                .unpaged(faker.random().nextBoolean()))
+        .last(faker.random().nextBoolean())
+        .totalElements(faker.number().positive())
+        .totalPages(faker.number().positive())
+        .size(faker.number().positive())
+        .number(faker.number().positive())
         .sort(mockSpringDataSortInfo())
-        .first(true)
-        .number(0)
-        .empty(true);
+        .first(faker.random().nextBoolean())
+        .number(faker.number().positive())
+        .empty(faker.random().nextBoolean());
   }
 
   public static CommentPostRequest mockCommentPostRequest() {
-    return new CommentPostRequest().content(MOCK_STRING);
+    return new CommentPostRequest()
+        .content(faker.lorem().characters(faker.number().numberBetween(1, 200)));
   }
 
   public static CommentPostResponse mockCommentPostResponse() {
-    return new CommentPostResponse().content(MOCK_STRING).id(0).timestamp(MOCK_OFFSETDATETIME);
+    return new CommentPostResponse()
+        .content(faker.lorem().characters(faker.number().numberBetween(1, 200)))
+        .id(0)
+        .timestamp(OffsetDateTime.now());
   }
 }

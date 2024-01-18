@@ -14,6 +14,7 @@ import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
 import dev.pollito.springcityexplorer.models.SortOrderEnum;
 import dev.pollito.springcityexplorer.service.CommentService;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,8 @@ class CommentControllerTest {
   @InjectMocks private CommentController commentController;
   @Mock private CommentService commentService;
 
+  private final Faker faker = new Faker();
+
   @Test
   void whenGetCommentsThenReturnComments() {
     ResponseEntity<Comments> expectedResponse = ResponseEntity.ok(mockComments());
@@ -34,7 +37,10 @@ class CommentControllerTest {
         .thenReturn(expectedResponse.getBody());
 
     ResponseEntity<Comments> actualResponse =
-        commentController.getComments(0, 0, SortOrderEnum.ASC);
+        commentController.getComments(
+            faker.number().numberBetween(1, 10),
+            faker.number().numberBetween(0, 10000),
+            SortOrderEnum.ASC);
     assertTrue(actualResponse.getStatusCode().is2xxSuccessful());
     assertEquals(expectedResponse, actualResponse);
   }
