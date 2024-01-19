@@ -1,4 +1,4 @@
-package dev.pollito.springcityexplorer.config.client;
+package dev.pollito.springcityexplorer.config.api;
 
 import com.weatherstack.api.WeatherApi;
 import dev.pollito.springcityexplorer.config.properties.WeatherProperties;
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
           })
     })
 @RequiredArgsConstructor
-public class WeatherClientConfig {
+public class WeatherApiConfig {
 
   private final WeatherProperties weatherProperties;
 
