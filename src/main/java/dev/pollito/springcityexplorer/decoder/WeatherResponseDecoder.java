@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 public class WeatherResponseDecoder implements Decoder {
 
@@ -23,14 +24,9 @@ public class WeatherResponseDecoder implements Decoder {
         new BufferedReader(
             new InputStreamReader(response.body().asInputStream(), StandardCharsets.UTF_8))) {
 
-      StringBuilder responseBody = new StringBuilder();
-      String line;
-      while ((line = reader.readLine()) != null) {
-        responseBody.append(line);
-      }
+      String responseBody = reader.lines().collect(Collectors.joining());
 
-      WeatherStackError error =
-          new Gson().fromJson(responseBody.toString(), WeatherStackError.class);
+      WeatherStackError error = new Gson().fromJson(responseBody, WeatherStackError.class);
       if (error != null && Boolean.FALSE.equals(error.getSuccess())) {
         throw new WeatherException(error);
       }
@@ -38,7 +34,7 @@ public class WeatherResponseDecoder implements Decoder {
       return new GsonBuilder()
           .registerTypeAdapter(Weather.class, new WeatherDeserializer())
           .create()
-          .fromJson(responseBody.toString(), type);
+          .fromJson(responseBody, type);
     }
   }
 }
