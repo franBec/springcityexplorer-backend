@@ -114,6 +114,7 @@ components:
           type: string
           description: Returns the local time of the location used for this request.
           example: 2019-09-07 08:14
+          x-field-extra-annotation: "@com.google.gson.annotations.SerializedName(\"localtime\")"
         localtime_epoch:
           type: integer
           description: Returns the local time (as UNIX timestamp) of the location used for this request.
