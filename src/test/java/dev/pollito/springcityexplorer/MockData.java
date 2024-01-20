@@ -8,11 +8,13 @@ import com.weatherstack.models.UnitEnum;
 import dev.pollito.springcityexplorer.models.Article;
 import dev.pollito.springcityexplorer.models.Articles;
 import dev.pollito.springcityexplorer.models.ArticlesPagination;
+import dev.pollito.springcityexplorer.models.CategoryEnum;
 import dev.pollito.springcityexplorer.models.Comment;
 import dev.pollito.springcityexplorer.models.CommentPostRequest;
 import dev.pollito.springcityexplorer.models.CommentPostResponse;
 import dev.pollito.springcityexplorer.models.Comments;
 import dev.pollito.springcityexplorer.models.CountryEnum;
+import dev.pollito.springcityexplorer.models.LanguageEnum;
 import dev.pollito.springcityexplorer.models.SpringDataPageable;
 import dev.pollito.springcityexplorer.models.SpringDataSortInfo;
 import dev.pollito.springcityexplorer.models.Weather;
@@ -142,8 +144,8 @@ public class MockData {
                     .description(faker.coffee().descriptor())
                     .url(faker.internet().url())
                     .image(faker.internet().image())
-                    .category(Article.CategoryEnum.GENERAL)
-                    .language(Article.LanguageEnum.AR)
+                    .category(CategoryEnum.GENERAL)
+                    .language(LanguageEnum.AR)
                     .country(CountryEnum.AR)
                     .publishedAt(OffsetDateTime.now())));
   }

@@ -292,12 +292,12 @@ components:
           type: string
           description: Returns an image URL associated with the given news article.
         category:
-          type: string
-          enum: [ "general", "business", "entertainment", "health", "science", "sports", "technology" ]
+          allOf:
+            - $ref: '#/components/schemas/CategoryEnum'
           description: Returns the category associated with the given news article.
         language:
-          type: string
-          enum: [ "ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
+          allOf:
+            - $ref: '#/components/schemas/LanguageEnum'
           description: Returns the language the given news article is in.
         country:
           allOf:
@@ -308,6 +308,12 @@ components:
           format: date-time
           description: The date and time when the publication occurred in ISO 8601 format.
           example: "2024-01-04T15:30:00Z"
+    CategoryEnum:
+      type: string
+      enum: [ "general", "business", "entertainment", "health", "science", "sports", "technology" ]
+    LanguageEnum:
+      type: string
+      enum: [ "ar", "de", "en", "es", "fr", "he", "it", "nl", "no", "pt", "ru", "se", "zh" ]
     Comments:
       type: object
       properties:

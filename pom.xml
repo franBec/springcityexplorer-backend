@@ -276,6 +276,25 @@
 							</configOptions>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generation for mediastack</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/feignclient/mediastack.yaml</inputSpec>
+							<generatorName>java</generatorName>
+							<library>feign</library>
+							<output>${project.build.directory}/generated-sources/openapi/</output>
+							<apiPackage>com.mediastack.api</apiPackage>
+							<modelPackage>com.mediastack.models</modelPackage>
+							<configOptions>
+								<feignClient>true</feignClient>
+								<interfaceOnly>true</interfaceOnly>
+								<useEnumCaseInsensitive>true</useEnumCaseInsensitive>
+							</configOptions>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
