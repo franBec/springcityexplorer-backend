@@ -6,16 +6,13 @@ import static dev.pollito.springcityexplorer.util.ControllerAdviceUtil.getWeathe
 import dev.pollito.springcityexplorer.controller.WeatherController;
 import dev.pollito.springcityexplorer.exception.WeatherException;
 import dev.pollito.springcityexplorer.models.Error;
-
 import java.util.Objects;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(assignableTypes = WeatherController.class)
 public class WeatherControllerAdvice {
-
 
   @ExceptionHandler(WeatherException.class)
   public ResponseEntity<Error> handle(WeatherException e) {

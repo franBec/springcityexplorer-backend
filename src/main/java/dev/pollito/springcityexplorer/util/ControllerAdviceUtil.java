@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 public class ControllerAdviceUtil {
   private ControllerAdviceUtil() {}
 
-  public static final String WEATHER_BAD_REQUEST_MESSAGE = "Looks like we took a wrong turn and couldn't find that city! Mind checking the map (spelling) again?";
+  public static final String WEATHER_BAD_REQUEST_MESSAGE =
+      "Looks like we took a wrong turn and couldn't find that city! Mind checking the map (spelling) again?";
 
   public static ResponseEntity<Error> getGenericError(Exception e) {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -23,15 +24,14 @@ public class ControllerAdviceUtil {
                 .session(UUID.randomUUID()));
   }
 
-  public static ResponseEntity<Error> getWeatherBadRequestError(WeatherException e){
+  public static ResponseEntity<Error> getWeatherBadRequestError(WeatherException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(
-                    new Error()
-                            .error(e.getClass().getSimpleName())
-                            .message(
-                                    WEATHER_BAD_REQUEST_MESSAGE)
-                            .method("N/A")
-                            .timestamp(OffsetDateTime.now())
-                            .session(UUID.randomUUID()));
+        .body(
+            new Error()
+                .error(e.getClass().getSimpleName())
+                .message(WEATHER_BAD_REQUEST_MESSAGE)
+                .method("N/A")
+                .timestamp(OffsetDateTime.now())
+                .session(UUID.randomUUID()));
   }
 }
