@@ -8,6 +8,7 @@ import dev.pollito.springcityexplorer.models.Error;
 import feign.codec.DecodeException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -17,7 +18,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class GlobalControllerAdvice {
+  public static final String GENERIC_ERROR_LOG_MESSAGE =
+      "A generic error is about to be returned. This may be caused by an unhandled exception";
 
   private final WeatherControllerAdvice weatherControllerAdvice;
 
@@ -46,6 +50,7 @@ public class GlobalControllerAdvice {
     if (isWeatherException(e)) {
       return weatherControllerAdvice.handle((WeatherException) e.getCause());
     }
+    log.error(GENERIC_ERROR_LOG_MESSAGE, e);
     return getGenericError(e);
   }
 
