@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(assignableTypes = WeatherController.class)
 public class WeatherControllerAdvice {
 
+  public static final int BAD_REQUEST_ERROR_CODE = 615;
+
   @ExceptionHandler(WeatherException.class)
   public ResponseEntity<Error> handle(WeatherException e) {
     if (isBadRequest(e)) {
@@ -25,6 +27,6 @@ public class WeatherControllerAdvice {
   private boolean isBadRequest(WeatherException e) {
     return Objects.nonNull(e.getWeatherStackError().getError())
         && Objects.nonNull(e.getWeatherStackError().getError().getCode())
-        && e.getWeatherStackError().getError().getCode() == 615;
+        && e.getWeatherStackError().getError().getCode() == BAD_REQUEST_ERROR_CODE;
   }
 }
