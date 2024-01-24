@@ -17,34 +17,20 @@ public class LoggingAspect {
   @Pointcut("execution(* com.weatherstack.api.*.*(..))")
   public void weatherstackApiMethodsPointcut() {}
 
-  @Pointcut("execution(public * dev.pollito.springcityexplorer.controller.*Controller.*(..))")
+  @Pointcut("execution(public * dev.pollito.springcityexplorer.controller..*.*(..))")
   public void controllerPublicMethodsPointcut() {}
 
-  @Before("weatherstackApiMethodsPointcut()")
-  public void logBeforeApiMethods(JoinPoint joinPoint) {
+  @Before("weatherstackApiMethodsPointcut() || controllerPublicMethodsPointcut()")
+  public void logBefore(JoinPoint joinPoint) {
     log.info(
         "["
             + joinPoint.getSignature().toShortString()
-            + "] ----> Args: "
+            + "] Args: "
             + Arrays.toString(joinPoint.getArgs()));
   }
 
-  @AfterReturning(pointcut = "weatherstackApiMethodsPointcut()", returning = "result")
-  public void logAfterReturningApiMethods(JoinPoint joinPoint, Object result) {
-    log.info("[" + joinPoint.getSignature().toShortString() + "] <---- Response: " + result);
-  }
-
-  @Before("controllerPublicMethodsPointcut()")
-  public void logBeforeControllerPublicMethods(JoinPoint joinPoint){
-    log.info(
-            "["
-                    + joinPoint.getSignature().toShortString()
-                    + "] ----> Args: "
-                    + Arrays.toString(joinPoint.getArgs()));
-  }
-
-  @AfterReturning(pointcut = "controllerPublicMethodsPointcut()", returning = "result")
-  public void logAfterControllerPublicMethods(JoinPoint joinPoint, Object result) {
-    log.info("[" + joinPoint.getSignature().toShortString() + "] <---- Response: " + result);
+  @AfterReturning(pointcut = "weatherstackApiMethodsPointcut() || controllerPublicMethodsPointcut()", returning = "result")
+  public void logAfterReturning(JoinPoint joinPoint, Object result) {
+    log.info("[" + joinPoint.getSignature().toShortString() + "] Response: " + result);
   }
 }
