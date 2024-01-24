@@ -1,6 +1,6 @@
 package dev.pollito.springcityexplorer.filter;
 
-import static dev.pollito.springcityexplorer.util.Constants.MDC_SESSION_ID_KEY;
+import static dev.pollito.springcityexplorer.util.Constants.SLF4J_MDC_SESSION_ID_KEY;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -21,7 +21,7 @@ public class LogFilter implements Filter {
   public void doFilter(
       ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
       throws IOException, ServletException {
-    MDC.put(MDC_SESSION_ID_KEY, UUID.randomUUID().toString());
+    MDC.put(SLF4J_MDC_SESSION_ID_KEY, UUID.randomUUID().toString());
     try {
       logRequestDetails((HttpServletRequest) servletRequest);
       filterChain.doFilter(servletRequest, servletResponse);
