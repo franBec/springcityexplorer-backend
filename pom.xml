@@ -160,7 +160,23 @@
             <scope>compile</scope>
         </dependency>
 
-    </dependencies>
+		<!-- Provides support for Aspect-Oriented Programming (AOP) in Java. -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.19</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Weaves aspects into Java bytecode, either at compile time or load time. Integral for applying AOP concepts like logging, transactions, etc. -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.19</version>
+			<scope>compile</scope>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
