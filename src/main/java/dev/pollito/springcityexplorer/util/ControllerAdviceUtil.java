@@ -1,5 +1,7 @@
 package dev.pollito.springcityexplorer.util;
 
+import static dev.pollito.springcityexplorer.util.Constants.MDC_SESSION_ID_KEY;
+
 import dev.pollito.springcityexplorer.exception.WeatherException;
 import dev.pollito.springcityexplorer.models.Error;
 import jakarta.validation.ConstraintViolation;
@@ -8,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +35,7 @@ public class ControllerAdviceUtil {
                 .message(GENERIC_ERROR_MESSAGE)
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 
   public static ResponseEntity<Error> getBadRequestError(
@@ -44,7 +47,7 @@ public class ControllerAdviceUtil {
                 .message(e.getBody().getDetail())
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 
   public static ResponseEntity<Error> getBadRequestError(ConstraintViolationException e) {
@@ -55,7 +58,7 @@ public class ControllerAdviceUtil {
                 .message(constraintViolationExceptionMessageFormatter(e))
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 
   private static String constraintViolationExceptionMessageFormatter(
@@ -81,7 +84,7 @@ public class ControllerAdviceUtil {
                 .message(e.getCause().getCause().getMessage())
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 
   public static ResponseEntity<Error> getBadRequestError(MethodArgumentNotValidException e) {
@@ -92,7 +95,7 @@ public class ControllerAdviceUtil {
                 .message(methodArgumentNotValidExceptionMessageFormatter(e))
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 
   @NotNull
@@ -112,6 +115,6 @@ public class ControllerAdviceUtil {
                 .message(WEATHER_BAD_REQUEST_MESSAGE)
                 .method("N/A")
                 .timestamp(OffsetDateTime.now())
-                .session(UUID.randomUUID()));
+                .session(UUID.fromString(MDC.get(MDC_SESSION_ID_KEY))));
   }
 }
