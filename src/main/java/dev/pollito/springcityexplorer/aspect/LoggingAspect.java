@@ -29,7 +29,9 @@ public class LoggingAspect {
             + Arrays.toString(joinPoint.getArgs()));
   }
 
-  @AfterReturning(pointcut = "weatherstackApiMethodsPointcut() || controllerPublicMethodsPointcut()", returning = "result")
+  @AfterReturning(
+      pointcut = "weatherstackApiMethodsPointcut() || controllerPublicMethodsPointcut()",
+      returning = "result")
   public void logAfterReturning(JoinPoint joinPoint, Object result) {
     log.info("[" + joinPoint.getSignature().toShortString() + "] Response: " + result);
   }

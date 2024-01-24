@@ -414,6 +414,6 @@ components:
         message:
           type: string
           description: A detailed error message.
-        method:
+        path:
           type: string
-          description: The method that resulted in the error.
+          description: The path that resulted in the error.

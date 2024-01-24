@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 public class ControllerAdviceUtil {
@@ -27,13 +29,19 @@ public class ControllerAdviceUtil {
   public static final String WEATHER_BAD_REQUEST_MESSAGE =
       "Looks like we took a wrong turn and couldn't find that city! Mind checking the map (spelling) again?";
 
+  private static String getCurrentRequestPath() {
+    ServletRequestAttributes attr =
+        (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+    return attr.getRequest().getRequestURI();
+  }
+
   public static ResponseEntity<Error> getGenericError(Exception e) {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(GENERIC_ERROR_MESSAGE)
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
@@ -45,7 +53,7 @@ public class ControllerAdviceUtil {
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(e.getBody().getDetail())
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
@@ -56,7 +64,7 @@ public class ControllerAdviceUtil {
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(constraintViolationExceptionMessageFormatter(e))
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
@@ -82,7 +90,7 @@ public class ControllerAdviceUtil {
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(e.getCause().getCause().getMessage())
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
@@ -93,7 +101,7 @@ public class ControllerAdviceUtil {
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(methodArgumentNotValidExceptionMessageFormatter(e))
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
@@ -113,7 +121,7 @@ public class ControllerAdviceUtil {
             new Error()
                 .error(e.getClass().getSimpleName())
                 .message(WEATHER_BAD_REQUEST_MESSAGE)
-                .method("N/A")
+                .path(getCurrentRequestPath())
                 .timestamp(OffsetDateTime.now())
                 .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
   }
