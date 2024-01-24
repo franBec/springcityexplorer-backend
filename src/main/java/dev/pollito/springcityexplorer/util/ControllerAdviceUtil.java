@@ -29,6 +29,18 @@ public class ControllerAdviceUtil {
   public static final String WEATHER_BAD_REQUEST_MESSAGE =
       "Looks like we took a wrong turn and couldn't find that city! Mind checking the map (spelling) again?";
 
+  private static ResponseEntity<Error> buildErrorResponse(
+      HttpStatus status, Exception e, String errorMessage) {
+    return ResponseEntity.status(status)
+        .body(
+            new Error()
+                .error(e.getClass().getSimpleName())
+                .message(errorMessage)
+                .path(getCurrentRequestPath())
+                .timestamp(OffsetDateTime.now())
+                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+  }
+
   private static String getCurrentRequestPath() {
     ServletRequestAttributes attr =
         (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -36,37 +48,17 @@ public class ControllerAdviceUtil {
   }
 
   public static ResponseEntity<Error> getGenericError(Exception e) {
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(GENERIC_ERROR_MESSAGE)
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e, GENERIC_ERROR_MESSAGE);
   }
 
   public static ResponseEntity<Error> getBadRequestError(
       MissingServletRequestParameterException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(e.getBody().getDetail())
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(HttpStatus.BAD_REQUEST, e, e.getBody().getDetail());
   }
 
   public static ResponseEntity<Error> getBadRequestError(ConstraintViolationException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(constraintViolationExceptionMessageFormatter(e))
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(
+        HttpStatus.BAD_REQUEST, e, constraintViolationExceptionMessageFormatter(e));
   }
 
   private static String constraintViolationExceptionMessageFormatter(
@@ -85,25 +77,12 @@ public class ControllerAdviceUtil {
   }
 
   public static ResponseEntity<Error> getBadRequestError(MethodArgumentTypeMismatchException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(e.getCause().getCause().getMessage())
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(HttpStatus.BAD_REQUEST, e, e.getCause().getCause().getMessage());
   }
 
   public static ResponseEntity<Error> getBadRequestError(MethodArgumentNotValidException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(methodArgumentNotValidExceptionMessageFormatter(e))
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(
+        HttpStatus.BAD_REQUEST, e, methodArgumentNotValidExceptionMessageFormatter(e));
   }
 
   @NotNull
@@ -116,13 +95,6 @@ public class ControllerAdviceUtil {
   }
 
   public static ResponseEntity<Error> getWeatherBadRequestError(WeatherException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-        .body(
-            new Error()
-                .error(e.getClass().getSimpleName())
-                .message(WEATHER_BAD_REQUEST_MESSAGE)
-                .path(getCurrentRequestPath())
-                .timestamp(OffsetDateTime.now())
-                .session(UUID.fromString(MDC.get(SLF4J_MDC_SESSION_ID_KEY))));
+    return buildErrorResponse(HttpStatus.BAD_REQUEST, e, WEATHER_BAD_REQUEST_MESSAGE);
   }
 }
