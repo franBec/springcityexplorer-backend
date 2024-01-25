@@ -2,4 +2,4 @@ weather:
   baseUrl: http://api.weatherstack.com
   secrets:
     key: ${WEATHER_API_KEY}
-  expiresAfter: 1 #hours
+  expiresAfter: 3600 #seconds
