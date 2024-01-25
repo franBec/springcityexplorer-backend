@@ -8,10 +8,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "client.weather")
+@ConfigurationProperties(prefix = "weather")
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WeatherProperties {
   String baseUrl;
   Map<String, String> secrets;
+  Integer expiresAfter;
 }
